@@ -90,7 +90,7 @@ public class CreateServiceImplFram extends JDialog {
             OpenProjectFileChooserDescriptor descriptor = new OpenProjectFileChooserDescriptor(false, false);
             descriptor.setHideIgnored(true);
             descriptor.setShowFileSystemRoots(false);
-            descriptor.setRoots(pluginEditorInfo.getProject().getBaseDir().getParent());
+            descriptor.setRoots(pluginEditorInfo.getProject().getBaseDir());
             descriptor.setTitle("请选择WEB-INF下的目录");
             FileChooser.chooseFiles(descriptor, pluginEditorInfo.getProject(), null, virtualFiles -> {
                 VirtualFile virtualFile = virtualFiles.get(0);
