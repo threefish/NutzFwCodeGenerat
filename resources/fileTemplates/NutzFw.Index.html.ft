@@ -57,14 +57,14 @@ layout("/layouts/blank.html",{title:title}){
             },
         },
         methods: {
-            handleView: function (uuid) {
-                parent.core.openUrlOk("/#[entityName]/view?uuid=" + uuid, "查看#[funName]信息", '60%', '500px', function (body, index) {
+            handleView: function (#[primaryKey]) {
+                parent.core.openUrlOk("/#[entityName]/view?#[primaryKey]=" + #[primaryKey], "查看#[funName]信息", '60%', '500px', function (body, index) {
                     parent.layer.closeAll();
                 });
             },
-            handleAdd: function (uuid) {
-                uuid = uuid || '';
-                parent.core.openUrlOk("/#[entityName]/edit?uuid=" + uuid, "编辑#[funName]信息", '60%', '500px', function (body, index) {
+            handleAdd: function (#[primaryKey]) {
+                #[primaryKey] = #[primaryKey] || '';
+                parent.core.openUrlOk("/#[entityName]/edit?#[primaryKey]=" + #[primaryKey], "编辑#[funName]信息", '60%', '500px', function (body, index) {
                     var iframeVm = parent.window.frames['layui-layer-iframe' + index].window.vm;
                     if (iframeVm.fromDataSubmit == false) {
                         iframeVm.fromDataSubmit = true;
@@ -89,11 +89,11 @@ layout("/layouts/blank.html",{title:title}){
                 var checkStatus = table.checkStatus('listTable')
                 if (checkStatus.data.length > 0) {
                     core.confirm("删除后无法恢复!<br>确定删除?", function () {
-                        var uuids = [];
+                        var ids = [];
                         for (var i in  checkStatus.data) {
-                            uuids.push(checkStatus.data[i].uuid);
+                            ids.push(checkStatus.data[i].#[primaryKey]);
                         }
-                        var jsonre = core.postJSON("/#[entityName]/del", {uuids: uuids});
+                        var jsonre = core.postJSON("/#[entityName]/del", {#[primaryKey]s: ids});
                         core.msg(jsonre);
                         if (jsonre.ok) {
                             listTable.reload();
@@ -155,10 +155,10 @@ layout("/layouts/blank.html",{title:title}){
                 table.on("tool(listTable)", function (obj) {
                     var data = obj.data, layEvent = obj.event;
                     if (layEvent == "edit") {
-                        vm.handleAdd(data.uuid);
+                        vm.handleAdd(data.#[primaryKey]);
                     }
                     if (layEvent == "view") {
-                        vm.handleView(data.uuid);
+                        vm.handleView(data.#[primaryKey]);
                     }
                 });
                 table.on("toolbar(listTable)", function (obj) {

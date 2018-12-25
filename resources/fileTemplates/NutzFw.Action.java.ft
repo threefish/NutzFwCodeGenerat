@@ -81,57 +81,61 @@ public class #[actionFileName] {
     /**
      * 新增、编辑保存页面
      *
-     * @param uuid
+     * @param #[primaryKey]
      * @return
      */
     @At("/edit")
     @Ok("btl:#[templatePath]edit.html")
     @RequiresPermissions("#[entityName].index.edit")
     @AutoCreateMenuAuth(name = "新增/编辑#[funName]", type = AutoCreateMenuAuth.RESOURCE, icon = "fa-cogs", parentPermission = "#[entityName].index")
-    public NutMap edit(@Param("uuid") String uuid) {
-        return NutMap.NEW().setv("uuid", uuid).setv("fromDataEdit", true);
+    public NutMap edit(@Param("#[primaryKey]") String #[primaryKey]) {
+        return NutMap.NEW().setv("#[primaryKey]", #[primaryKey]).setv("fromDataEdit", true);
     }
 
     /**
      * 新增、编辑保存页面
      *
-     * @param uuid
+     * @param #[primaryKey]
      * @return
      */
     @At("/view")
     @Ok("btl:#[templatePath]edit.html")
     @RequiresPermissions("#[entityName].index.edit")
     @AutoCreateMenuAuth(name = "查看详情", type = AutoCreateMenuAuth.RESOURCE, icon = "fa-cogs", parentPermission = "#[entityName].index")
-    public NutMap view(@Param("uuid") String uuid) {
-        return NutMap.NEW().setv("uuid", uuid).setv("fromDataEdit", false);
+    public NutMap view(@Param("#[primaryKey]") String #[primaryKey]) {
+        return NutMap.NEW().setv("#[primaryKey]", #[primaryKey]).setv("fromDataEdit", false);
     }
 
     /**
      * 加载详情
      *
-     * @param uuid
+     * @param #[primaryKey]
      * @return
      */
     @At("/details")
     @Ok("json:{ignoreNull:false,dateFormat:'yyyy-MM-dd'}")
     @RequiresPermissions("#[entityName].index.edit")
-    public AjaxResult details(@Param("uuid") String uuid) {
-        return AjaxResult.sucess(#[sp.uncapitalize(serviceFileName)].fetch(uuid));
+    public AjaxResult details(@Param("#[primaryKey]") String #[primaryKey]) {
+        return AjaxResult.sucess(#[sp.uncapitalize(serviceFileName)].fetch(#[primaryKey]));
     }
 
 
     /**
      * 批量删除
      *
-     * @param uuids
+     * @param #[primaryKey]s
      * @return
      */
     @At("/del")
     @Ok("json")
     @RequiresPermissions("#[entityName].index.del")
     @AutoCreateMenuAuth(name = "批量删除", type = AutoCreateMenuAuth.RESOURCE, icon = "fa-cogs", parentPermission = "#[entityName].index")
-    public AjaxResult del(@Param("::uuids") String[] uuids) {
-        officeStaffService.deleteByUUIDs(uuids);
+    public AjaxResult del(@Param("::#[primaryKey]s") String[] #[primaryKey]s) {
+        <##if(uuid){ ##>
+        #[sp.uncapitalize(serviceFileName)].deleteByUUIDs(#[primaryKey]s);
+        <##}else{##>
+        #[sp.uncapitalize(serviceFileName)].delete(#[primaryKey]s,false);
+        <##}##>
         return AjaxResult.sucess("删除成功");
     }
 
@@ -151,8 +155,8 @@ public class #[actionFileName] {
             return AjaxResult.error(errors.getErrorsList().iterator().next());
         }
         Cnd checkCnd = Cnd.NEW();
-        if (Strings.isNotBlank(data.getUuid())) {
-            checkCnd.and("name", "=", data.getName()).and("uuid", "!=", data.getUuid());
+        if (Strings.isNotBlank(data.get#[sp.uncapitalize(primaryKey)]())) {
+            checkCnd.and("name", "=", data.getName()).and("#[primaryKey]", "!=", data.get#[sp.uncapitalize(primaryKey)]());
         } else {
             checkCnd.and("name", "=", data.getName());
         }

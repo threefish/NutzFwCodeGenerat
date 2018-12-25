@@ -55,8 +55,8 @@ layout("/layouts/blank.html",{title:title}){
         methods: {
             init: function () {
                 this.initLoad = true;
-                if (this.fromData.uuid != '') {
-                    $.post(base + "/#[entityName]/details", {uuid: this.fromData.uuid}, function (json) {
+                if (this.fromData.#[primaryKey] != '') {
+                    $.post(base + "/#[entityName]/details", {#[primaryKey]: this.fromData.#[primaryKey]}, function (json) {
                         vm.fromData = json.data;
                     });
                 }

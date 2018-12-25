@@ -6,6 +6,10 @@ package com.sgaop.codegenerat.vo;
  */
 public class JavaBaseVO {
 
+    String primaryKey;
+
+    boolean uuid;
+
     String entityName;
     String entityPackage;
 
@@ -22,6 +26,22 @@ public class JavaBaseVO {
     String templatePath;
 
     String user;
+
+    public boolean isUuid() {
+        return uuid;
+    }
+
+    public void setUuid(boolean uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+    }
 
     public String getFunName() {
         return funName;

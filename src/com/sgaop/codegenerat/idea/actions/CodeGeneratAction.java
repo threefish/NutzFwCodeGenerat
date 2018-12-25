@@ -15,9 +15,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.util.PsiUtilBase;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
-import com.sgaop.codegenerat.vo.JavaField;
 import com.sgaop.codegenerat.ui.CreateServiceImplFram;
 import com.sgaop.codegenerat.util.JavaFieldUtil;
+import com.sgaop.codegenerat.vo.JavaField;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,8 +93,9 @@ public class CodeGeneratAction extends DumbAwareAction {
                     javaFields.add(javaField);
                 }
             }
-            ProjectPluginConfig pluginEditorInfo = new ProjectPluginConfig(applicationManager, processor, document, project, editor, psiFile, javaFields);
-            CreateServiceImplFram dialog = new CreateServiceImplFram(pluginEditorInfo, packageName, filename);
+            CreateServiceImplFram dialog = new CreateServiceImplFram(
+                    new ProjectPluginConfig(applicationManager, processor, document, project, editor, psiFile, javaFields),
+                    packageName, filename);
             dialog.pack();
             dialog.setVisible(true);
         } else {
