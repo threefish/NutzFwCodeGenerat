@@ -1,0 +1,48 @@
+<idea-plugin>
+    <id>com.sgaop.codegenerat.nutzfw</id>
+    <name>NutzFw</name>
+    <version>1.0.1</version>
+    <vendor email="huchuc@vip.qq.com" url="https://github.com/threefish/NutzFw">threefish</vendor>
+    <description><![CDATA[
+      <h1>Intellij idea plugin for <a href="https://github.com/threefish/NutzFw">NutzFw</a></h1>
+      <br/>
+      <p>
+      <b>
+      <a href="https://github.com/threefish/NutzFwCodeGenerat/">GitHub</a> |
+      <a href="https://github.com/threefish/NutzFwCodeGenerat/issues">Issues</a>
+      </b>
+      </p>
+      <p>
+      <b>English</b>
+       <ul>
+         <li> 1、Add code generator</li>
+       </ul>
+       <b>中文</b>
+       <ul>
+         <li> 1、添加代码生成器</li>
+       </ul>
+      </p>
+      <br/>
+      <p><a href="https://github.com/threefish/NutzFwCodeGenerat/issues">Send feedback</a></p>
+    ]]>
+    </description>
+    <change-notes><![CDATA[
+        <b>1.0.1</b>
+       <ul>
+        <li>添加代码生成器</li>
+      </p>
+    ]]>
+    </change-notes>
+    <idea-version since-build="145.0"/>
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+    <actions>
+        <!--快速生成接口和实现类-->
+        <action id="codeGeneratAction" icon="/fileTypes/java.png"
+                class="com.sgaop.codegenerat.idea.actions.CodeGeneratAction" text="代码生成" description="代码生成">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>
