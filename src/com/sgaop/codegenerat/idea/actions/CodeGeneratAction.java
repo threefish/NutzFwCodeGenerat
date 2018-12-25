@@ -73,7 +73,7 @@ public class CodeGeneratAction extends DumbAwareAction {
             //当前所在文档
             Document document = editor.getDocument();
             List<JavaField> javaFields = new ArrayList<>();
-            PsiField[] psiFields = psiJavaFile.getClasses()[0].getAllFields();
+            PsiField[] psiFields = psiJavaFile.getClasses()[0].getFields();
             for (PsiField field : psiFields) {
                 String dbName = JavaFieldUtil.getDbNameAndIsColumn(field);
                 if (dbName != null) {

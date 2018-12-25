@@ -155,8 +155,8 @@ public class #[actionFileName] {
             return AjaxResult.error(errors.getErrorsList().iterator().next());
         }
         Cnd checkCnd = Cnd.NEW();
-        if (Strings.isNotBlank(data.get#[sp.uncapitalize(primaryKey)]())) {
-            checkCnd.and("name", "=", data.getName()).and("#[primaryKey]", "!=", data.get#[sp.uncapitalize(primaryKey)]());
+        if (Strings.isNotBlank(data.get#[sp.capitalize(primaryKey)]())) {
+            checkCnd.and("name", "=", data.getName()).and("#[primaryKey]", "!=", data.get#[sp.capitalize(primaryKey)]());
         } else {
             checkCnd.and("name", "=", data.getName());
         }
