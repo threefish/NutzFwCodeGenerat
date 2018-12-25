@@ -6,9 +6,9 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
-import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
+import com.sgaop.codegenerat.vo.JavaBaseVO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
+ * @author 黄川 306955302@qq.com
+ * @date: 2018/5/30
  * 自动生成接口和实现类
  */
 public class CreateServiceImplFram extends JDialog {
@@ -105,6 +107,8 @@ public class CreateServiceImplFram extends JDialog {
         try {
             if (this.htmlPathCheckBox.isSelected() && this.basePathText.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(this.rootPane, "请选择HTML目录", "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            } else if (this.funNameText.getText().trim().length() == 0) {
+                JOptionPane.showMessageDialog(this.rootPane, "请输入功能名称", "错误提示", JOptionPane.ERROR_MESSAGE, null);
             } else {
                 String moduleBasePath = pluginrInfo.getPsiFile().getVirtualFile().getCanonicalPath();
                 String temp = entityPackage.replaceAll("\\.", "/");

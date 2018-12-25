@@ -7,10 +7,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * Created with IntelliJ IDEA.
- * 创建人: 黄川
- * 创建时间: 2017/9/12  10:52
- * 描述此类：
+ * @author 黄川 306955302@qq.com
+ * @date: 2018/5/30
  */
 public class FileUtil {
 

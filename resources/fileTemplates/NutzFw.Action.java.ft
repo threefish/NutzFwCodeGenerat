@@ -23,6 +23,7 @@ import org.nutz.plugins.validation.Errors;
 /**
  * @author #[user] xxx@qq.com
  * @date #[date(), dateFormat="yyyy年MM月dd日"]
+ * #[funName]
  */
 @IocBean
 @At("/#[entityName]")
