@@ -1,7 +1,9 @@
 package com.sgaop.codegenerat.ui;
 
+import com.intellij.ide.actions.OpenProjectFileChooserDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
+import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -19,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Properties;
 
 /**
  * @author 黄川 306955302@qq.com
@@ -83,14 +84,14 @@ public class CreateServiceImplFram extends JDialog {
         });
         contentPane.registerKeyboardAction(((e) -> onCancel()), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         basePathText.addActionListener((e -> {
-            String basePath = pluginEditorInfo.getProject().getBasePath();
-            JFileChooser chooser = new JFileChooser();
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setMultiSelectionEnabled(false);
-            chooser.setCurrentDirectory(Paths.get(basePath).toFile());
-            int returnVal = chooser.showOpenDialog(this.rootPane);
-            if (returnVal == 0) {
-                String selectPath = chooser.getSelectedFile().getAbsolutePath();
+            OpenProjectFileChooserDescriptor descriptor = new OpenProjectFileChooserDescriptor(false, false);
+            descriptor.setHideIgnored(true);
+            descriptor.setShowFileSystemRoots(false);
+            descriptor.setRoots(pluginEditorInfo.getProject().getBaseDir().getParent());
+            descriptor.setTitle("请选择WEB-INF下的目录");
+            FileChooser.chooseFiles(descriptor, pluginEditorInfo.getProject(), null, virtualFiles -> {
+                VirtualFile virtualFile = virtualFiles.get(0);
+                String selectPath = virtualFile.getCanonicalPath();
                 int start = selectPath.indexOf("WEB-INF");
                 if (start == -1) {
                     JOptionPane.showMessageDialog(this.rootPane, "请选择WEB-INF下的目录", "错误提示", JOptionPane.ERROR_MESSAGE, null);
@@ -98,7 +99,7 @@ public class CreateServiceImplFram extends JDialog {
                     selectPath = selectPath.replace("\\\\", "/").replace("\\", "/");
                     basePathText.setText(selectPath);
                 }
-            }
+            });
         }));
     }
 
@@ -114,7 +115,6 @@ public class CreateServiceImplFram extends JDialog {
                 String temp = entityPackage.replaceAll("\\.", "/");
                 moduleBasePath = moduleBasePath.replace(temp, "");
                 moduleBasePath = moduleBasePath.replace("/" + entityName + ".java", "");
-                Properties sys = System.getProperties();
                 JavaBaseVO baseVO = new JavaBaseVO();
                 baseVO.setEntityName(this.entityName);
                 baseVO.setEntityPackage(this.entityPackage);
@@ -128,7 +128,7 @@ public class CreateServiceImplFram extends JDialog {
                 String templatePath = this.basePathText.getText();
                 int start = templatePath.indexOf("WEB-INF");
                 baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
-                baseVO.setUser(sys.getProperty("user.name"));
+                baseVO.setUser(System.getProperties().getProperty("user.name"));
                 HashMap bindData = getBindData(baseVO);
                 bindData.put("base", baseVO);
                 bindData.put("fields", pluginrInfo.getJavaFields());
@@ -138,12 +138,11 @@ public class CreateServiceImplFram extends JDialog {
                 FileTemplate actionImpl = fileTemplateManager.getTemplate("NutzFw.Action");
                 FileTemplate indexHtml = fileTemplateManager.getTemplate("NutzFw.Index");
                 FileTemplate editHtml = fileTemplateManager.getTemplate("NutzFw.Edit");
-                final String finalmoduleBasePath = moduleBasePath;
                 VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(Paths.get(moduleBasePath).toUri().toString());
-                renderTemplte.renderToFile(service.getText(), bindData, getPath(finalmoduleBasePath, this.servicePackageText.getText()));
-                renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(finalmoduleBasePath, this.serviceImplPackageText.getText()));
+                renderTemplte.renderToFile(service.getText(), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
+                renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
                 if (this.actionCheckBox.isSelected()) {
-                    renderTemplte.renderToFile(actionImpl.getText(), bindData, getPath(finalmoduleBasePath, this.actionPackageText.getText()));
+                    renderTemplte.renderToFile(actionImpl.getText(), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
                 }
                 if (this.htmlPathCheckBox.isSelected()) {
                     renderTemplte.renderToFile(indexHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "index.html"));
