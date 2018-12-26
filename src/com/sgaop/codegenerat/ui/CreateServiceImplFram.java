@@ -11,7 +11,7 @@ import com.sgaop.codegenerat.idea.ProjectPluginConfig;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
-import com.sgaop.codegenerat.vo.JavaField;
+import com.sgaop.codegenerat.vo.JavaFieldVO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -126,7 +126,7 @@ public class CreateServiceImplFram extends JDialog {
     }
 
 
-    private HashMap buildData(List<JavaField> javaFields) {
+    private HashMap buildData(List<JavaFieldVO> javaFields) {
         JavaBaseVO baseVO = new JavaBaseVO();
         baseVO.setEntityName(this.entityName);
         baseVO.setEntityPackage(this.entityPackage);
@@ -137,9 +137,9 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setActionFileName(this.actionFileName);
         baseVO.setActionPackage(this.actionPackage);
         baseVO.setFunName(this.funNameText.getText());
-        Optional optional = javaFields.stream().filter(JavaField::isPrimaryKey).findFirst();
+        Optional optional = javaFields.stream().filter(JavaFieldVO::isPrimaryKey).findFirst();
         if (optional.get() != null) {
-            JavaField field = (JavaField) optional.get();
+            JavaFieldVO field = (JavaFieldVO) optional.get();
             baseVO.setPrimaryKey(field.getDbName());
             if ("uuid".equals(field.getDbName().toLowerCase())) {
                 baseVO.setUuid(true);

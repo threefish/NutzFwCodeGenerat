@@ -6,7 +6,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import com.sgaop.codegenerat.vo.JavaField;
+import com.sgaop.codegenerat.vo.JavaFieldVO;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class ProjectPluginConfig {
 
     PsiFile psiFile;
 
-    List<JavaField> javaFields;
+    List<JavaFieldVO> javaFields;
 
-    public ProjectPluginConfig(Application applicationManager, CommandProcessor processor, Document document, Project project, Editor editor, PsiFile psiFile, List<JavaField> javaFields) {
+    public ProjectPluginConfig(Application applicationManager, CommandProcessor processor, Document document, Project project, Editor editor, PsiFile psiFile, List<JavaFieldVO> javaFields) {
         this.applicationManager = applicationManager;
         this.processor = processor;
         this.document = document;
@@ -42,11 +42,11 @@ public class ProjectPluginConfig {
         this.javaFields = javaFields;
     }
 
-    public List<JavaField> getJavaFields() {
+    public List<JavaFieldVO> getJavaFields() {
         return javaFields;
     }
 
-    public void setJavaFields(List<JavaField> javaFields) {
+    public void setJavaFields(List<JavaFieldVO> javaFields) {
         this.javaFields = javaFields;
     }
 

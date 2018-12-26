@@ -28,12 +28,12 @@
     | funName |String | 当前功能名称 |
     | templatePath |String | HTML模版目录  |
     | user | String| 当前用户  |
-    | primaryKey |String |是否主键  |
+    | primaryKey |String |主键  |
     | uuid | boolean | 主键是否是UUID |
     | base | 对象 | 以上所有变量都可以使用#[base.变量名]取用 |
-    | fields | List<JavaField> | 当前实体类的字段列表 |
+    | fields | List<JavaFieldVO> | 当前实体类的字段列表 |
     
-- 当前实体类的字段列表
+- 当前实体类的字段信息
     
     | 变量名   |      类型      |  意义 |
     |----------|:-------------:|------:|

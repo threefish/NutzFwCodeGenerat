@@ -5,9 +5,13 @@ package com.sgaop.codegenerat.vo;
  * @date: 2018/12/24
  */
 public class JavaBaseVO {
-
+    /**
+     * 主键
+     */
     String primaryKey;
-
+    /**
+     * 主键是否是UUID
+     */
     boolean uuid;
 
     String entityName;
@@ -21,10 +25,17 @@ public class JavaBaseVO {
 
     String actionFileName;
     String actionPackage;
-
+    /**
+     * 当前功能名称
+     */
     String funName;
+    /**
+     * HTML模版目录
+     */
     String templatePath;
-
+    /**
+     * 当前用户
+     */
     String user;
 
     public boolean isUuid() {

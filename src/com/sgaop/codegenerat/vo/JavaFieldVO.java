@@ -4,7 +4,7 @@ package com.sgaop.codegenerat.vo;
  * @author 黄川 huchuc@vip.qq.com
  * @date: 2018/12/24
  */
-public class JavaField {
+public class JavaFieldVO {
     /**
      * JAVA字段名称
      */
@@ -49,7 +49,7 @@ public class JavaField {
      */
     String dictCode;
 
-    public JavaField() {
+    public JavaFieldVO() {
     }
 
     public boolean isPrimaryKey() {
@@ -86,7 +86,7 @@ public class JavaField {
 
     @Override
     public String toString() {
-        return "JavaField{" +
+        return "JavaFieldVO{" +
                 "name='" + name + '\'' +
                 ", primaryKey=" + primaryKey +
                 ", comment='" + comment + '\'' +

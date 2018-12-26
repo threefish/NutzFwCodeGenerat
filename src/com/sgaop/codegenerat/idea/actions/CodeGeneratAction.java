@@ -17,7 +17,7 @@ import com.intellij.psi.util.PsiUtilBase;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
 import com.sgaop.codegenerat.ui.CreateServiceImplFram;
 import com.sgaop.codegenerat.util.JavaFieldUtil;
-import com.sgaop.codegenerat.vo.JavaField;
+import com.sgaop.codegenerat.vo.JavaFieldVO;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,12 +72,12 @@ public class CodeGeneratAction extends DumbAwareAction {
             CommandProcessor processor = CommandProcessor.getInstance();
             //当前所在文档
             Document document = editor.getDocument();
-            List<JavaField> javaFields = new ArrayList<>();
+            List<JavaFieldVO> javaFields = new ArrayList<>();
             PsiField[] psiFields = psiJavaFile.getClasses()[0].getFields();
             for (PsiField field : psiFields) {
                 String dbName = JavaFieldUtil.getDbNameAndIsColumn(field);
                 if (dbName != null) {
-                    JavaField javaField = new JavaField();
+                    JavaFieldVO javaField = new JavaFieldVO();
                     javaField.setName(field.getName());
                     javaField.setPrimaryKey(JavaFieldUtil.isPrimaryKey(field));
                     javaField.setDate(JavaFieldUtil.isDate(field));
