@@ -159,11 +159,11 @@ public class CreateServiceImplFram extends JDialog {
     private void render(String moduleBasePath, HashMap bindData) {
         ITemplteEngine renderTemplte = new BeetlTemplteEngine();
         FileTemplateManager fileTemplateManager = FileTemplateManager.getInstance(pluginrInfo.getProject());
-        FileTemplate service = fileTemplateManager.getTemplate("NutzFw.Service");
-        FileTemplate serviceImpl = fileTemplateManager.getTemplate("NutzFw.ServiceImpl");
-        FileTemplate actionImpl = fileTemplateManager.getTemplate("NutzFw.Action");
-        FileTemplate indexHtml = fileTemplateManager.getTemplate("NutzFw.Index");
-        FileTemplate editHtml = fileTemplateManager.getTemplate("NutzFw.Edit");
+        FileTemplate service = fileTemplateManager.getJ2eeTemplate("Service");
+        FileTemplate serviceImpl = fileTemplateManager.getJ2eeTemplate("ServiceImpl");
+        FileTemplate actionImpl = fileTemplateManager.getJ2eeTemplate("Action");
+        FileTemplate indexHtml = fileTemplateManager.getJ2eeTemplate("Index");
+        FileTemplate editHtml = fileTemplateManager.getJ2eeTemplate("Edit");
         VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(Paths.get(moduleBasePath).toUri().toString());
         renderTemplte.renderToFile(service.getText(), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
         renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
