@@ -14,7 +14,7 @@ layout("/layouts/blank.html",{title:title}){
          <## if(field.dict){ ##>
         <div class="form-group col-xs-6">
             <label>#[field.comment]</label>
-            ${dict("#[field.dictCode]",false,'v-model="fromData.#[field.name]"','class="form-control"',':disabled="!fromDataEdit"')}
+            ${dict("#[field.dictCode]",false,'v-model=fromData.#[field.name]','class="form-control"',':disabled="!fromDataEdit"')}
         </div>
         <##}else if(field.date){##>
         <div class="form-group col-xs-6">
