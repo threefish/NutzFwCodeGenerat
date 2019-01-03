@@ -116,7 +116,7 @@ layout("/layouts/blank.html",{title:title}){
         mounted: function () {
                 <## for(field in fields){ ##>
                 <## if(field.dict){ ##>
-            var #[field.dictCode] = JSON.parse('${data.#[field.dictCode]');
+            var #[field.dictCode] = JSON.parse('${data.#[field.dictCode]}');
                 <##}}##>
             layui.use(['table'], function () {
                 table = layui.table;
