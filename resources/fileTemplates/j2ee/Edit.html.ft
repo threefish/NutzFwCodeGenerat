@@ -136,6 +136,7 @@ layout("/layouts/blank.html",{title:title}){
 <script type="text/javascript">
     <##if(richText){##>
     var ue = new Object();
+    var readOnly = "${data.fromDataEdit}" == "true";
     <##}##>
    var vm = new Vue({
         el: '#container',
@@ -149,7 +150,11 @@ layout("/layouts/blank.html",{title:title}){
                 <##}}##>
             },
             fromDataSubmit: false,
+            <##if(richText){##>
+            fromDataEdit: readOnly,
+            <##}else{##>
             fromDataEdit: "${data.fromDataEdit}" == "true",
+            <##}##>
             initLoad: false,
         },
         methods: {
@@ -209,7 +214,7 @@ layout("/layouts/blank.html",{title:title}){
                     initialFrameHeight: 200,
                     enableAutoSave: false,
                     initialFrameWidth: '100%',
-                    readonly: vm.fromDataEdit
+                    readonly: readOnly
                 });
                 ue[fieldname].render(fieldname);
                 ue[fieldname].addListener('contentChange', function () {

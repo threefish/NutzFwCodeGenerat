@@ -128,7 +128,7 @@ public class JavaFieldUtil {
             javaField.setMaxLength(10);
         }
         if (Strings.isNullOrEmpty(javaField.getPlaceholder())) {
-            javaField.setPlaceholder("请输入 ...");
+            javaField.setPlaceholder("请输入...");
         }
         if (javaField.isAttachment() && Strings.isNullOrEmpty(javaField.getAttachSuffix())) {
             javaField.setAttachSuffix("xlsx,xls,png,jpg,doc,docx");

@@ -7,6 +7,7 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.util.messages.impl.Message;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
@@ -118,6 +119,7 @@ public class CreateServiceImplFram extends JDialog {
                 moduleBasePath = moduleBasePath.replace(temp, "");
                 moduleBasePath = moduleBasePath.replace("/" + entityName + ".java", "");
                 render(moduleBasePath, buildData(pluginrInfo.getJavaFields()));
+                JOptionPane.showMessageDialog(this.rootPane, "生成完成", "生成完成", JOptionPane.INFORMATION_MESSAGE, null);
                 dispose();
             }
         } catch (Throwable ex) {
