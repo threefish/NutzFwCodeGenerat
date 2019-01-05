@@ -8,7 +8,6 @@ import com.nutzfw.filter.CheckRoleAndSession;
 import #[servicePackage].#[serviceFileName];
 import com.nutzfw.vo.AjaxResult;
 import com.nutzfw.vo.LayuiTableDataListVO;
-import lombok.extern.java.Log;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.aop.interceptor.ioc.TransAop;
 import org.nutz.dao.Cnd;
@@ -18,6 +17,8 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.*;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 import org.nutz.plugins.validation.Errors;
 
 /**
@@ -28,8 +29,9 @@ import org.nutz.plugins.validation.Errors;
 @IocBean
 @At("/#[entityName]")
 @Filters(@By(type = CheckRoleAndSession.class, args = {Cons.SESSION_USER_KEY, Cons.SESSION_USER_ROLE}))
-@Log
 public class #[actionFileName] {
+
+    final static Log log= Logs.get();
 
     @Inject
     #[serviceFileName] #[sp.uncapitalize(serviceFileName)];

@@ -6,6 +6,7 @@ layout("/layouts/blank.html",{title:title}){
     .title-lable {
         height: 35px;
     }
+
     .required {
         color: red;
         position: absolute;
@@ -13,7 +14,20 @@ layout("/layouts/blank.html",{title:title}){
         font-size: 18px;
         left: 0px;
     }
+    .edui-editor-bottomContainer{
+        display: none;
+    }
+    .edui-default .edui-editor-toolbarboxinner {
+        background: #fff;
+    }
+    .tree {
+        width: calc(100% - 40px) !important;
+    }
 
+    .input-group-addon-right-icon {
+        height: 34px;
+        width: 40px;
+    }
     .box-tips {
         text-align: left;
         background: #fff;
@@ -21,6 +35,9 @@ layout("/layouts/blank.html",{title:title}){
         padding: 10px 5px;
         line-height: 20px;
         color: #77b0e2;
+    }
+    .width100{
+        width: 100% !important;
     }
 </style>
 <section class="content" id="container" v-if="initLoad">
@@ -30,7 +47,13 @@ layout("/layouts/blank.html",{title:title}){
          <## if(field.dict){ ##>
         <div class="form-group col-xs-6">
             <label>#[field.comment]</label>
-            ${dict("#[field.dictCode]",false,'v-model=fromData.#[field.name]','class="form-control"',':disabled="!fromDataEdit"','placeholder="#[field.placeholder]"')}
+            <##if(field.multiDict){##>
+            <div class="input-group" style="width: 100%;">
+                ${dict("#[field.dictCode]",true,'v-model=fromData.#[field.name]','class="tree width100"',':disabled="!fromDataEdit"','placeholder="#[field.placeholder]"')}
+            </div>
+            <##}else{##>
+                ${dict("#[field.dictCode]",false,'v-model=fromData.#[field.name]','class="form-control"',':disabled="!fromDataEdit"','placeholder="#[field.placeholder]"')}
+            <##}##>
         </div>
         <##}else if(field.date){##>
         <div class="form-group col-xs-6">
@@ -172,8 +195,20 @@ layout("/layouts/blank.html",{title:title}){
             },
             handleViewAttach:function (fieldName) {
                 core.showAttachList(this.fromData[fieldName]);
-            }
+            },
         <##}##>
+        <##if(field.multiDict){##>
+            reverEnumDesc: function (fieldName, sysCode) {
+                return core.postJSON("/sysDict/getDictName", {sysCode: sysCode, ids: this.fromData[fieldName]});
+            },
+            dictChange: function (fieldId, dictValFieldName) {
+                //字典变化，需要修改依赖值的内容
+                core.dictChange(fieldId, dictValFieldName, this)
+            },
+            handleShowEnumTree: function (fieldName, sysCode, multipleDict) {
+                core.handleShowEnumTree(fieldName, sysCode, multipleDict, this);
+            },
+        <##}else{##>
         },
         created: function () {
             this.init();
@@ -214,7 +249,7 @@ layout("/layouts/blank.html",{title:title}){
                     initialFrameHeight: 200,
                     enableAutoSave: false,
                     initialFrameWidth: '100%',
-                    readonly: readOnly
+                    readonly: !readOnly
                 });
                 ue[fieldname].render(fieldname);
                 ue[fieldname].addListener('contentChange', function () {

@@ -44,7 +44,10 @@ public class JavaFieldVO {
      * 是字典
      */
     boolean dict;
-
+    /**
+     * 多选字典
+     */
+    boolean multiDict;
     /**
      * 枚举字典CODE
      * <p>
@@ -112,6 +115,13 @@ public class JavaFieldVO {
      */
     int maxLength;
 
+    public boolean isMultiDict() {
+        return multiDict;
+    }
+
+    public void setMultiDict(boolean multiDict) {
+        this.multiDict = multiDict;
+    }
 
     public String getName() {
         return name;

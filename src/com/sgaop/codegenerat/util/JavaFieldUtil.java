@@ -108,6 +108,9 @@ public class JavaFieldUtil {
                                     javaField.setDict(true);
                                     javaField.setDictCode(value);
                                     break;
+                                case "multiDict":
+                                    javaField.setMultiDict(Boolean.parseBoolean(value));
+                                    break;
                                 case "placeholder":
                                     javaField.setPlaceholder(value);
                                     break;
