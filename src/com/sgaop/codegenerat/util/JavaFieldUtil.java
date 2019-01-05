@@ -2,6 +2,8 @@ package com.sgaop.codegenerat.util;
 
 import com.google.common.base.Strings;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttribute;
+import com.intellij.lang.jvm.annotation.JvmAnnotationAttributeValue;
+import com.intellij.lang.jvm.annotation.JvmAnnotationConstantValue;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.impl.source.tree.java.PsiNameValuePairImpl;
@@ -78,6 +80,10 @@ public class JavaFieldUtil {
                     String name = attribute.getAttributeName();
                     try {
                         String value = ((PsiNameValuePairImpl) attribute).getLiteralValue();
+                        JvmAnnotationAttributeValue attributeValue = attribute.getAttributeValue();
+                        if (value == null && attributeValue instanceof JvmAnnotationConstantValue) {
+                            value = ((JvmAnnotationConstantValue) attributeValue).getConstantValue().toString();
+                        }
                         if (value != null) {
                             switch (name) {
                                 case "required":

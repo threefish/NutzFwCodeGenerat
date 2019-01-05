@@ -6,6 +6,22 @@ layout("/layouts/blank.html",{title:title}){
     .title-lable {
         height: 35px;
     }
+    .required {
+        color: red;
+        position: absolute;
+        top: 3px;
+        font-size: 18px;
+        left: 0px;
+    }
+
+    .box-tips {
+        text-align: left;
+        background: #fff;
+        font-size: 12px;
+        padding: 10px 5px;
+        line-height: 20px;
+        color: #77b0e2;
+    }
 </style>
 <section class="content" id="container" v-if="initLoad">
     <div role="form">
@@ -39,7 +55,7 @@ layout("/layouts/blank.html",{title:title}){
             <div class="col-sm-8">
                 <div class="form-control" style="border: none;">
                     <div class="layui-btn layui-btn-xs layui-btn-normal"
-                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],#[field.attachSuffix])">
+                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],'#[field.attachSuffix]')">
                         添加
                     </div>
                     <div class="layui-btn layui-btn-xs layui-btn-normal"

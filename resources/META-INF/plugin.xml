@@ -15,11 +15,13 @@
       <p>
       <b>English</b>
        <ul>
-         <li> 1、Add code generator</li>
+         <li> 1、Can quickly generate additional, delete, change, check, attachment upload, view, list display and other functions based on the annotation table structure</li>
+         <li> 2、Can be enhanced by deploying template conten</li>
        </ul>
        <b>中文</b>
        <ul>
-         <li> 1、添加代码生成器</li>
+         <li> 1、可以快速生成基于注解表结构的增、删、改、查、附件上传、查看、列表展示等功能</li>
+         <li> 2、可以通过调配模版内容加强功能</li>
        </ul>
       </p>
       <br/>
