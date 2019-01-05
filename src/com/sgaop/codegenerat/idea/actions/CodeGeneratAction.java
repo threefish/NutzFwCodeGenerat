@@ -77,19 +77,8 @@ public class CodeGeneratAction extends DumbAwareAction {
             for (PsiField field : psiFields) {
                 String dbName = JavaFieldUtil.getDbNameAndIsColumn(field);
                 if (dbName != null) {
-                    JavaFieldVO javaField = new JavaFieldVO();
-                    javaField.setName(field.getName());
-                    javaField.setPrimaryKey(JavaFieldUtil.isPrimaryKey(field));
-                    javaField.setDate(JavaFieldUtil.isDate(field));
+                    JavaFieldVO javaField = JavaFieldUtil.getNutzFw(field);
                     javaField.setDbName(dbName);
-                    javaField.setComment(JavaFieldUtil.getComment(field));
-                    javaField.setType(field.getType().getPresentableText());
-                    javaField.setFullType(field.getType().getCanonicalText());
-                    String dictCode = JavaFieldUtil.getDictCode(field);
-                    if (dictCode != null) {
-                        javaField.setDict(true);
-                        javaField.setDictCode(dictCode);
-                    }
                     javaFields.add(javaField);
                 }
             }

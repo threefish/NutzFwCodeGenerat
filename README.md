@@ -30,20 +30,31 @@
     | user | String| 当前用户  |
     | primaryKey |String |主键  |
     | uuid | boolean | 主键是否是UUID |
+    | richText | boolean | 是否有UE富文本编辑器 |
+    | attachment | boolean | 是否有附件上传 |
     | base | 对象 | 以上所有变量都可以使用#[base.变量名]取用 |
     | fields | List<JavaFieldVO> | 当前实体类的字段列表 |
     
 - 当前实体类的字段信息
     
-    | 变量名   |      类型      |  意义 |
-    |----------|:-------------:|------:|
-    | name | String| JAVA字段名称 |
-    | primaryKey| boolean| 主键 |
-    | comment | String| 字段描述  |
-    | dbName| String| 数据库字段值 |
-    | type |String | JAVA字段类型 |
-    | fullType |String | JAVA字段类型包含引用 |
-    | date | boolean| 是否日期 |
-    | dict |boolean | 是否字典 |
-    | dictCode |String | 字典Code |
+    | 变量名   |      类型      |  意义 | 默认值 |
+    |----------|:-------------:|------:|------:|
+    | name | String| JAVA字段名称 | 无|
+    | primaryKey| boolean| 主键 |false|
+    | comment | String| 字段描述  |无|
+    | dbName| String| 数据库字段值 |无|
+    | type |String | JAVA字段类型 |无|
+    | fullType |String | JAVA字段类型包含引用 |无|
+    | date | boolean| 是否日期 |false|
+    | dict |boolean | 是否字典 |false|
+    | dictCode |String | 字典Code |无|
+    | required |boolean | 是否必填必选字段 |false|
+    | text |int | 文本类型 输入框2-多行文本框3-百度UE4 |false|
+    | attachment |boolean | 附件类型|false|
+    | attachmentType |int | 附件类型-多附件0-单附件1|0|
+    | attachmentAllIsImg |boolean | 附件全部是图片|false|
+    | attachSuffix |String | 限制附件格式(jpg,png)|xlsx,xls,png,jpg,doc,docx|
+    | placeholder |String |提示信息|无|
+    | maxLength |int |文本最大长度|10|
+    
       

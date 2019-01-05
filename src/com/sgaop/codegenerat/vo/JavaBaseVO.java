@@ -38,6 +38,52 @@ public class JavaBaseVO {
      */
     String user;
 
+    /**
+     * 是否有UE富文本编辑器
+     */
+    boolean richText;
+    /**
+     * 是否有附件上传
+     */
+    boolean attachment;
+
+    public boolean isRichText() {
+        return richText;
+    }
+
+    @Override
+    public String toString() {
+        return "JavaBaseVO{" +
+                "primaryKey='" + primaryKey + '\'' +
+                ", uuid=" + uuid +
+                ", entityName='" + entityName + '\'' +
+                ", entityPackage='" + entityPackage + '\'' +
+                ", servicePackage='" + servicePackage + '\'' +
+                ", serviceFileName='" + serviceFileName + '\'' +
+                ", serviceImplFileName='" + serviceImplFileName + '\'' +
+                ", serviceImplPackage='" + serviceImplPackage + '\'' +
+                ", actionFileName='" + actionFileName + '\'' +
+                ", actionPackage='" + actionPackage + '\'' +
+                ", funName='" + funName + '\'' +
+                ", templatePath='" + templatePath + '\'' +
+                ", user='" + user + '\'' +
+                ", richText=" + richText +
+                ", attachment=" + attachment +
+                '}';
+    }
+
+    public boolean isAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(boolean attachment) {
+        this.attachment = attachment;
+    }
+
+    public void setRichText(boolean richText) {
+        this.richText = richText;
+    }
+
     public boolean isUuid() {
         return uuid;
     }

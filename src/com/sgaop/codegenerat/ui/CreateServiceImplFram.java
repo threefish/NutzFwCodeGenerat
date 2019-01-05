@@ -145,6 +145,8 @@ public class CreateServiceImplFram extends JDialog {
                 baseVO.setUuid(true);
             }
         }
+        baseVO.setRichText(javaFields.stream().filter(javaFieldVO -> javaFieldVO.getText() == 4).findFirst() != null);
+        baseVO.setAttachment(javaFields.stream().filter(JavaFieldVO::isAttachment).findFirst() != null);
         String templatePath = this.basePathText.getText();
         int start = templatePath.indexOf("WEB-INF");
         baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
@@ -193,6 +195,8 @@ public class CreateServiceImplFram extends JDialog {
         bindData.put("user", baseVO.getUser());
         bindData.put("uuid", baseVO.isUuid());
         bindData.put("primaryKey", baseVO.getPrimaryKey());
+        bindData.put("richText", baseVO.isRichText());
+        bindData.put("attachment", baseVO.isAttachment());
         return bindData;
     }
 
