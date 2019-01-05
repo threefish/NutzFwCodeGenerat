@@ -46,6 +46,10 @@ public class JavaBaseVO {
      * 是否有附件上传
      */
     boolean attachment;
+    /**
+     * 多选字典
+     */
+    boolean multiDict;
 
     public boolean isRichText() {
         return richText;
@@ -69,11 +73,20 @@ public class JavaBaseVO {
                 ", user='" + user + '\'' +
                 ", richText=" + richText +
                 ", attachment=" + attachment +
+                ", multiDict=" + multiDict +
                 '}';
     }
 
     public boolean isAttachment() {
         return attachment;
+    }
+
+    public boolean isMultiDict() {
+        return multiDict;
+    }
+
+    public void setMultiDict(boolean multiDict) {
+        this.multiDict = multiDict;
     }
 
     public void setAttachment(boolean attachment) {

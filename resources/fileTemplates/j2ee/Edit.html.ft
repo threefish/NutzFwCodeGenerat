@@ -197,7 +197,7 @@ layout("/layouts/blank.html",{title:title}){
                 core.showAttachList(this.fromData[fieldName]);
             },
         <##}##>
-        <##if(field.multiDict){##>
+        <##if(multiDict){##>
             reverEnumDesc: function (fieldName, sysCode) {
                 return core.postJSON("/sysDict/getDictName", {sysCode: sysCode, ids: this.fromData[fieldName]});
             },
@@ -208,7 +208,7 @@ layout("/layouts/blank.html",{title:title}){
             handleShowEnumTree: function (fieldName, sysCode, multipleDict) {
                 core.handleShowEnumTree(fieldName, sysCode, multipleDict, this);
             },
-        <##}else{##>
+        <##}##>
         },
         created: function () {
             this.init();
