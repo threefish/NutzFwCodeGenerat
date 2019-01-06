@@ -20,9 +20,7 @@ layout("/layouts/blank.html",{title:title}){
     .edui-default .edui-editor-toolbarboxinner {
         background: #fff;
     }
-    .tree {
-        width: calc(100% - 40px) !important;
-    }
+
 
     .input-group-addon-right-icon {
         height: 34px;
@@ -36,9 +34,14 @@ layout("/layouts/blank.html",{title:title}){
         line-height: 20px;
         color: #77b0e2;
     }
+     <##if(multiDict){##>
+    .tree {
+        width: calc(100% - 40px) !important;
+    }
     .width100{
         width: 100% !important;
     }
+     <##}##>
 </style>
 <section class="content" id="container" v-if="initLoad">
     <div role="form">
