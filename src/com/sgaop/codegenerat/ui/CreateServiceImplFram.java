@@ -4,6 +4,7 @@ import com.intellij.ide.actions.OpenProjectFileChooserDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -120,8 +121,8 @@ public class CreateServiceImplFram extends JDialog {
                 moduleBasePath = moduleBasePath.replace(temp, "");
                 moduleBasePath = moduleBasePath.replace("/" + entityName + ".java", "");
                 render(moduleBasePath, buildData(pluginrInfo.getJavaFields()));
-                JOptionPane.showMessageDialog(this.rootPane, "生成完成", "生成完成", JOptionPane.INFORMATION_MESSAGE, null);
                 dispose();
+                Messages.showInfoMessage(pluginrInfo.getProject(), "代码生成完成！", "生成完成");
             }
         } catch (Throwable ex) {
             JOptionPane.showMessageDialog(this.rootPane, ex.getMessage(), "错误提示", JOptionPane.ERROR_MESSAGE, null);
