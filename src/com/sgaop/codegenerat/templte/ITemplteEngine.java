@@ -17,5 +17,5 @@ public interface ITemplteEngine {
      */
     String render(String templePath, Map bindData) throws Exception;
 
-    void renderToFile(String templePath, Map bindData, Path path);
+    Path renderToFile(String templePath, Map bindData, Path path);
 }

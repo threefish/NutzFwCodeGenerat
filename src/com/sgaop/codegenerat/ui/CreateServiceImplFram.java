@@ -7,7 +7,6 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.util.messages.impl.Message;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
@@ -53,6 +52,8 @@ public class CreateServiceImplFram extends JDialog {
     private JCheckBox htmlPathCheckBox;
     private TextFieldWithBrowseButton basePathText;
     private JTextField funNameText;
+    private JCheckBox implCheckBox;
+    private JCheckBox serviceCheckBox;
 
     public CreateServiceImplFram(ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
         this.pluginrInfo = pluginEditorInfo;
@@ -127,7 +128,12 @@ public class CreateServiceImplFram extends JDialog {
         }
     }
 
-
+    /**
+     * 绑定参数
+     *
+     * @param javaFields
+     * @return
+     */
     private HashMap buildData(List<JavaFieldVO> javaFields) {
         JavaBaseVO baseVO = new JavaBaseVO();
         baseVO.setEntityName(this.entityName);
@@ -161,27 +167,48 @@ public class CreateServiceImplFram extends JDialog {
         return bindData;
     }
 
+    /**
+     * 生成文件
+     *
+     * @param moduleBasePath
+     * @param bindData
+     */
     private void render(String moduleBasePath, HashMap bindData) {
         ITemplteEngine renderTemplte = new BeetlTemplteEngine();
         FileTemplateManager fileTemplateManager = FileTemplateManager.getInstance(pluginrInfo.getProject());
-        FileTemplate service = fileTemplateManager.getJ2eeTemplate("Service");
-        FileTemplate serviceImpl = fileTemplateManager.getJ2eeTemplate("ServiceImpl");
-        FileTemplate actionImpl = fileTemplateManager.getJ2eeTemplate("Action");
-        FileTemplate indexHtml = fileTemplateManager.getJ2eeTemplate("Index");
-        FileTemplate editHtml = fileTemplateManager.getJ2eeTemplate("Edit");
-        VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(Paths.get(moduleBasePath).toUri().toString());
-        renderTemplte.renderToFile(service.getText(), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
-        renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
+        if (this.serviceCheckBox.isSelected()) {
+            FileTemplate service = fileTemplateManager.getJ2eeTemplate("Service");
+            Path path = renderTemplte.renderToFile(service.getText(), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
+            refreshPath(path);
+        }
+        if (this.implCheckBox.isSelected()) {
+            FileTemplate serviceImpl = fileTemplateManager.getJ2eeTemplate("ServiceImpl");
+            Path path = renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
+            refreshPath(path);
+        }
         if (this.actionCheckBox.isSelected()) {
-            renderTemplte.renderToFile(actionImpl.getText(), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
+            FileTemplate actionImpl = fileTemplateManager.getJ2eeTemplate("Action");
+            Path path = renderTemplte.renderToFile(actionImpl.getText(), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
+            refreshPath(path);
         }
         if (this.htmlPathCheckBox.isSelected()) {
+            FileTemplate indexHtml = fileTemplateManager.getJ2eeTemplate("Index");
+            FileTemplate editHtml = fileTemplateManager.getJ2eeTemplate("Edit");
             renderTemplte.renderToFile(indexHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "index.html"));
-            renderTemplte.renderToFile(editHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
+            Path path = renderTemplte.renderToFile(editHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
+            refreshPath(path);
         }
-        value.refresh(true, true);
     }
 
+    /**
+     * 刷新目录
+     *
+     * @param path
+     */
+    private void refreshPath(Path path) {
+        VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(path.toUri().toString());
+        value.refresh(true, true);
+    }
 
     private HashMap getBindData(JavaBaseVO baseVO) {
         HashMap bindData = new HashMap(11);

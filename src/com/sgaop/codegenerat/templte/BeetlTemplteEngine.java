@@ -67,11 +67,12 @@ public class BeetlTemplteEngine implements ITemplteEngine {
      * @return
      */
     @Override
-    public void renderToFile(String templeText, Map bindData, Path path) throws BeetlException{
+    public Path renderToFile(String templeText, Map bindData, Path path) throws BeetlException{
         Path floderPath = path.getParent();
         if (!floderPath.toFile().exists()) {
             floderPath.toFile().mkdirs();
         }
         FileUtil.strToFile(render(templeText, bindData), path.toFile());
+        return floderPath;
     }
 }

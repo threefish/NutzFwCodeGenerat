@@ -171,6 +171,32 @@
               <text value="功能名称:"/>
             </properties>
           </component>
+          <component id="5e0dd" class="javax.swing.JCheckBox" binding="implCheckBox">
+            <constraints>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="需要"/>
+              <toolTipText value="勾选创建"/>
+            </properties>
+          </component>
+          <component id="2885d" class="javax.swing.JCheckBox" binding="serviceCheckBox">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="需要"/>
+              <toolTipText value="勾选创建"/>
+            </properties>
+          </component>
+          <component id="4b213" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="注意：已存在的会被新生成覆盖！"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>
