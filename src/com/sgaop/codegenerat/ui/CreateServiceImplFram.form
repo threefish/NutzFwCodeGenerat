@@ -65,11 +65,6 @@
             </constraints>
             <properties/>
           </component>
-          <vspacer id="9c3ac">
-            <constraints>
-              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </vspacer>
           <component id="172e8" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
@@ -123,7 +118,7 @@
               <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="需要"/>
+              <text value="创建"/>
               <toolTipText value="勾选创建"/>
             </properties>
           </component>
@@ -132,7 +127,7 @@
               <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="需要"/>
+              <text value="创建"/>
               <toolTipText value="勾选创建"/>
             </properties>
           </component>
@@ -176,7 +171,7 @@
               <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="需要"/>
+              <text value="创建"/>
               <toolTipText value="勾选创建"/>
             </properties>
           </component>
@@ -185,16 +180,16 @@
               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="需要"/>
+              <text value="创建"/>
               <toolTipText value="勾选创建"/>
             </properties>
           </component>
           <component id="4b213" class="javax.swing.JLabel">
             <constraints>
-              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="注意：已存在的会被新生成覆盖！"/>
+              <text value="注意：只有勾选创建才会生成文件，并且已存在的同名文件会被覆盖！"/>
             </properties>
           </component>
         </children>
