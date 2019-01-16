@@ -50,7 +50,7 @@ layout("/layouts/blank.html",{title:title}){
     var num=data!=0?(data.split(",").length):0;
     }}
     {{#if(num>0){ }}
-    <div class="layui-btn layui-btn-xs layui-btn-normal" view-attach="viewAttach">查看附件({{num}})</div>
+    <div class="layui-btn layui-btn-xs layui-btn-normal" lay-event="showAttach" data-field="{{d.LAY_FIELD}}">查看附件({{num}})</div>
     {{# }else{ }}
     无附件
     {{# } }}
@@ -86,137 +86,138 @@ layout("/layouts/blank.html",{title:title}){
         },
         methods: {
             handleView: function (#[primaryKey]) {
-                parent.core.openUrlOk("/#[entityName]/view?#[primaryKey]=" + #[primaryKey], "查看#[funName]信息", '60%', '500px', function (body, index) {
-                    parent.layer.closeAll();
-                });
-            },
-            handleAdd: function (#[primaryKey]) {
-                #[primaryKey] = #[primaryKey] || '';
-                parent.core.openUrlOk("/#[entityName]/edit?#[primaryKey]=" + #[primaryKey], "编辑#[funName]信息", '60%', '500px', function (body, index) {
-                    var iframeVm = parent.window.frames['layui-layer-iframe' + index].window.vm;
-                    if (iframeVm.fromDataSubmit == false) {
-                        iframeVm.fromDataSubmit = true;
-                        $.post(base + "/#[entityName]/save", {
-                            fromData: iframeVm.fromData,
-                        }, function (data) {
-                            iframeVm.fromDataSubmit = false;
-                            if (data.ok) {
-                                listTable.reload();
-                                parent.layer.closeAll();
-                                parent.core.msg("操作成功！");
-                            } else {
-                                parent.core.error(data.msg);
-                            }
-                        });
+        parent.core.openUrlOk("/#[entityName]/view?#[primaryKey]=" + #[primaryKey], "查看#[funName]信息", '60%', '500px', function (body, index) {
+            parent.layer.closeAll();
+        });
+    },
+    handleAdd: function (#[primaryKey]) {
+        #[primaryKey] = #[primaryKey] || '';
+        parent.core.openUrlOk("/#[entityName]/edit?#[primaryKey]=" + #[primaryKey], "编辑#[funName]信息", '60%', '500px', function (body, index) {
+            var iframeVm = parent.window.frames['layui-layer-iframe' + index].window.vm;
+            if (iframeVm.fromDataSubmit == false) {
+                iframeVm.fromDataSubmit = true;
+                $.post(base + "/#[entityName]/save", {
+                    fromData: iframeVm.fromData,
+                }, function (data) {
+                    iframeVm.fromDataSubmit = false;
+                    if (data.ok) {
+                        listTable.reload();
+                        parent.layer.closeAll();
+                        parent.core.msg("操作成功！");
                     } else {
-                        core.msg("您操作的太频繁了，请稍候再试")
+                        parent.core.error(data.msg);
                     }
                 });
-            },
-            handleDel: function () {
-                var checkStatus = table.checkStatus('listTable')
-                if (checkStatus.data.length > 0) {
-                    core.confirm("删除后无法恢复!<br>确定删除?", function () {
-                        var ids = [];
-                        for (var i in  checkStatus.data) {
-                            ids.push(checkStatus.data[i].#[primaryKey]);
-                        }
-                        var jsonre = core.postJSON("/#[entityName]/del", {#[primaryKey]s: ids});
-                        core.msg(jsonre);
-                        if (jsonre.ok) {
-                            listTable.reload();
-                        }
-                    });
-                } else {
-                    core.error("请选择一条记录");
-                }
-            },
-            handleSearchTable: function () {
-                listTable.reload({
-                    where: vm.searchData,
-                    page: {curr: 1}
-                });
+            } else {
+                core.msg("您操作的太频繁了，请稍候再试")
             }
-        },
-        created: function () {
-            this.initLoad = true;
-        },
-        mounted: function () {
-                <## for(field in fields){ ##>
-                <## if(field.dict){ ##>
-            var #[field.dictCode] = JSON.parse('${data.#[field.dictCode]}');
-                <##}}##>
-            layui.use(['table'], function () {
-                table = layui.table;
-                listTable = table.render({
-                    id: 'listTable',
-                    elem: '#listTable',
-                    page: true,
-                    method: 'post',
-                    url: base + '/#[entityName]/list',
-                    height: 'full-140',
-                    limit: 50,
-                    even: false,
-                    toolbar: '#topToolbar',
-                    defaultToolbar: ['filter', 'print'],
-                    request: {
-                        pageName: 'pageNum',
-                        limitName: 'pageSize',
-                    },
-                    where: vm.searchData,
-                    cols: [[
-                        {title: '序号', type: 'numbers', width: 50},
-                        {type: 'checkbox'},
-                        <## for(field in fields){ ##>
-                            <## if(field.dict){ ##>
-                        {field: '#[field.name]', title: '#[field.comment]', templet: function (row) {
-                                return #[field.dictCode][row.#[field.name]];
-                            }
-                        },
-                        <##}else if(field.attachment && field.attachmentAllIsImg){##>
-                        {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","minWidth": 120},
-                        <##}else if(field.attachment){##>
-                        {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","minWidth": 120},
-                        <##}else if(!field.primaryKey){##>
-                        {field: '#[field.name]', title: '#[field.comment]'},
-                        <##}}##>
-                        {field: 'opAt', title: '创建时间'},
-                        {title: '操作', width: 160, align: 'center', toolbar: '#toolBarFixed'},
-                    ]],
-                     <##if(attachment){##>
-                    done: function () {
-                        $("[view-attach]").on("click", function () {
-                            var $el = $(this);
-                            var attachIds = $el.parent().parent().parent().attr("data-content");
-                            core.showAttachList(attachIds);
-                        });
-                    }
-                    <##}##>
-                });
-                table.on("tool(listTable)", function (obj) {
-                    var data = obj.data, layEvent = obj.event;
-                    if (layEvent == "edit") {
-                        vm.handleAdd(data.#[primaryKey]);
-                    }
-                    if (layEvent == "view") {
-                        vm.handleView(data.#[primaryKey]);
-                    }
-                });
-                table.on("toolbar(listTable)", function (obj) {
-                    var layEvent = obj.event;
-                    if (!$(this).hasClass("layui-btn-disabled")) {
-                        switch (layEvent) {
-                            case "handleAdd":
-                                vm.handleAdd();
-                                break;
-                            case "handleDel":
-                                vm.handleDel();
-                                break;
-                        }
-                    }
-                });
+        });
+    },
+    handleDel: function () {
+        var checkStatus = table.checkStatus('listTable')
+        if (checkStatus.data.length > 0) {
+            core.confirm("删除后无法恢复!<br>确定删除?", function () {
+                var ids = [];
+                for (var i in  checkStatus.data) {
+                    ids.push(checkStatus.data[i].#[primaryKey]);
+                }
+                var jsonre = core.postJSON("/#[entityName]/del", {#[primaryKey]s: ids});
+                core.msg(jsonre);
+                if (jsonre.ok) {
+                    listTable.reload();
+                }
             });
+        } else {
+            core.error("请选择一条记录");
         }
+    },
+    handleSearchTable: function () {
+        listTable.reload({
+            where: vm.searchData,
+            page: {curr: 1}
+        });
+    }
+    },
+    created: function () {
+        this.initLoad = true;
+    },
+    mounted: function () {
+    <## for(field in fields){ ##>
+    <## if(field.dict){ ##>
+        var #[field.dictCode] = JSON.parse('${data.#[field.dictCode]}');
+    <##}}##>
+        layui.use(['table'], function () {
+            table = layui.table;
+            listTable = table.render({
+                        id: 'listTable',
+                        elem: '#listTable',
+                        page: true,
+                        method: 'post',
+                        url: base + '/#[entityName]/list',
+                        height: 'full-140',
+                        limit: 50,
+                        even: false,
+                        toolbar: '#topToolbar',
+                        defaultToolbar: ['filter', 'print'],
+                        request: {
+                            pageName: 'pageNum',
+                            limitName: 'pageSize',
+                        },
+                        where: vm.searchData,
+                        cols: [[
+                                    {title: '序号', type: 'numbers', width: 50},
+                                    {type: 'checkbox'},
+                                <## for(field in fields){ ##>
+                                <## if(field.dict){ ##>
+                                {field: '#[field.name]', title: '#[field.comment]', templet: function (row) {
+                                        return #[field.dictCode][row.#[field.name]];
+                                    }
+                                },
+                                <##}else if(field.attachment && field.attachmentAllIsImg){##>
+                                {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","minWidth": 120},
+                    <##}else if(field.attachment){##>
+                    {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","minWidth": 120},
+                    <##}else if(!field.primaryKey){##>
+                    {field: '#[field.name]', title: '#[field.comment]'},
+        <##}}##>
+            {field: 'opAt', title: '创建时间'},
+            {title: '操作', width: 160, align: 'center', toolbar: '#toolBarFixed'},
+        ]],
+            done: function () {
+                $('.layui-table-fixed-r').removeClass('layui-hide');
+            }
+        });
+            table.on("tool(listTable)", function (obj) {
+                var data = obj.data, layEvent = obj.event;
+                if (layEvent == "edit") {
+                    vm.handleAdd(data.#[primaryKey]);
+                }
+                if (layEvent == "view") {
+                    vm.handleView(data.#[primaryKey]);
+                }
+
+            <##if(attachment){##>
+                if (layEvent == 'showAttach') {
+                    var dataField = $(obj.tr).find("div[lay-event=showAttach]").attr("data-field");
+                    core.showAttachList(data[dataField]);
+                }
+            <##}##>
+            });
+            table.on("toolbar(listTable)", function (obj) {
+                var layEvent = obj.event;
+                if (!$(this).hasClass("layui-btn-disabled")) {
+                    switch (layEvent) {
+                        case "handleAdd":
+                            vm.handleAdd();
+                            break;
+                        case "handleDel":
+                            vm.handleDel();
+                            break;
+                    }
+                }
+            });
+        });
+    }
     });
 </script>
 <%}%>
