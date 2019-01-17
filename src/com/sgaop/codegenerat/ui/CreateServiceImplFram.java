@@ -9,6 +9,7 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
+import com.sgaop.codegenerat.idea.actions.ImportCodeTemplate;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
@@ -55,6 +56,7 @@ public class CreateServiceImplFram extends JDialog {
     private JTextField funNameText;
     private JCheckBox implCheckBox;
     private JCheckBox serviceCheckBox;
+    private JButton importBtn;
 
     public CreateServiceImplFram(ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
         this.pluginrInfo = pluginEditorInfo;
@@ -107,6 +109,7 @@ public class CreateServiceImplFram extends JDialog {
                 }
             });
         }));
+        importBtn.addActionListener(new ImportCodeTemplate(this.pluginrInfo.getProject()));
     }
 
     private void onOK() {

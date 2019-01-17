@@ -3,6 +3,10 @@ package com.sgaop.codegenerat.util;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -67,6 +71,7 @@ public class FileUtil {
 
     /**
      * 输入流转字符串
+     *
      * @param inputStream
      * @param charsetName
      * @return
@@ -155,5 +160,44 @@ public class FileUtil {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 创建临时文件
+     */
+    public static Path createTempFile() throws IOException {
+        Path newFile;
+        do {
+            newFile = Paths.get(System.getProperty("java.io.tmpdir"), "NutzFw", UUID.randomUUID().toString().replace("-", "") + ".tmp");
+        } while (newFile.toFile().exists());
+        if (!newFile.getParent().toFile().exists()) {
+            Files.createDirectory(newFile.getParent());
+        }
+        Files.createFile(newFile);
+        return newFile;
+    }
+
+    /**
+     * 创建临时目录
+     *
+     * @param folderName
+     */
+    public static String createTempFolder(String folderName) throws IOException {
+        return createTempFolderPath(folderName).toFile().toString();
+    }
+
+    /**
+     * 创建临时目录
+     *
+     * @param folderName
+     */
+    public static Path createTempFolderPath(String folderName) throws IOException {
+        Path newFile;
+        do {
+            //如果文件存在
+            newFile = Paths.get(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString().replace("-", ""), folderName);
+        } while (newFile.toFile().exists());
+        Files.createDirectories(newFile);
+        return newFile;
     }
 }
