@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,13 +28,31 @@ public class ImportCodeTemplate implements ActionListener {
 
     private static final String EXTENSION = "zip";
 
-    Project project;
+    static HashMap<String, String> templates = new HashMap<>();
+
+    static {
+        templates.put("Action.java.ft", "Action");
+        templates.put("Edit.html.ft", "Edit");
+        templates.put("Index.html.ft", "Index");
+        templates.put("Service.java.ft", "Service");
+        templates.put("ServiceImpl.java.ft", "ServiceImpl");
+    }
 
     FileTemplateManager fileTemplateManager;
+    private Project project;
 
     public ImportCodeTemplate(Project project) {
         this.project = project;
         this.fileTemplateManager = FileTemplateManager.getInstance(project);
+    }
+
+    private int setText(String fileName, String text) {
+        String val = templates.getOrDefault(fileName, "");
+        if (!"".equals(val)) {
+            fileTemplateManager.getJ2eeTemplate(val).setText(text);
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -73,34 +92,5 @@ public class ImportCodeTemplate implements ActionListener {
         }
     }
 
-
-    private int setText(String fileName, String text) {
-        int count = 0;
-        switch (fileName) {
-            case "Action.java.ft":
-                fileTemplateManager.getJ2eeTemplate("Action").setText(text);
-                count++;
-                break;
-            case "Edit.html.ft":
-                fileTemplateManager.getJ2eeTemplate("Edit").setText(text);
-                count++;
-                break;
-            case "Index.html.ft":
-                fileTemplateManager.getJ2eeTemplate("Index").setText(text);
-                count++;
-                break;
-            case "Service.java.ft":
-                fileTemplateManager.getJ2eeTemplate("Service").setText(text);
-                count++;
-                break;
-            case "ServiceImpl.java.ft":
-                fileTemplateManager.getJ2eeTemplate("ServiceImpl").setText(text);
-                count++;
-                break;
-            default:
-                break;
-        }
-        return count;
-    }
 
 }

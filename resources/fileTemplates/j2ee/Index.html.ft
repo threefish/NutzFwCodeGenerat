@@ -63,9 +63,9 @@ layout("/layouts/blank.html",{title:title}){
     var num=data!=0?(data.split(",").length):0;
     }}
     {{#if(num>0){ }}
-    <div class="layui-btn layui-btn-xs layui-btn-normal" view-attach="viewAttachImg">查看图片({{num}})</div>
+    <div class="layui-btn layui-btn-xs layui-btn-normal" lay-event="showAttach" data-field="{{d.LAY_FIELD}}">查看图片({{num}})</div>
     {{# }else{ }}
-    无附件
+    无图片
     {{# } }}
 </div>
 </script>
