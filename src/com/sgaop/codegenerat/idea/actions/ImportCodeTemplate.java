@@ -5,9 +5,10 @@ import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.sgaop.codegenerat.util.FileUtil;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ImportCodeTemplate implements ActionListener {
 
-    private static final String EXTENSION = "zip";
+    private static final String EXTENSION = ".zip";
 
     static HashMap<String, String> templates = new HashMap<>();
 
@@ -57,29 +58,38 @@ public class ImportCodeTemplate implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent anActionEvent) {
-        OpenProjectFileChooserDescriptor descriptor = new OpenProjectFileChooserDescriptor(true);
-        descriptor.setForcedToUseIdeaFileChooser(true);
-        descriptor.setHideIgnored(true);
-        descriptor.setTitle("请选择需要导入的模版文件(zip)");
         Path path = null;
         try {
             path = FileUtil.createTempFolderPath("NutzFwCodeGeneratImport");
             Path finalPath = path;
-            FileChooser.chooseFiles(descriptor, project, null, virtualFiles -> {
-                VirtualFile virtualFile = virtualFiles.get(0);
-                if (virtualFile != null && EXTENSION.equals(virtualFile.getExtension())) {
-                    FileUtil.extractZipFile(Paths.get(virtualFile.getPath()).toFile(), finalPath.toFile());
-                    File[] list = finalPath.toFile().listFiles();
-                    AtomicInteger count = new AtomicInteger();
-                    Arrays.stream(list).filter(file -> file.isFile()).forEach(file -> {
-                        String text = FileUtil.readStringByFile(file);
-                        count.set(count.get() + setText(file.getName(), text));
-                    });
-                    Messages.showInfoMessage(MessageFormat.format("成功导入{0}个模版文件！", count), "提示");
-                } else {
-                    Messages.showErrorDialog("请选择模版压缩包！", "提示");
+            JFileChooser fd = new JFileChooser();
+            fd.setFileHidingEnabled(false);
+            fd.setCurrentDirectory(new File(project.getBasePath()));
+            fd.setDialogTitle("请选择需要导入的模版文件(zip)");
+            fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fd.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    if (f.isDirectory() || f.getName().toLowerCase().endsWith(EXTENSION)) {
+                        return true;
+                    }
+                    return false;
+                }
+                @Override
+                public String getDescription() {
+                    return "请选择需要导入的模版文件(zip)";
                 }
             });
+            fd.showOpenDialog(null);
+            File selectedFile = fd.getSelectedFile();
+            FileUtil.extractZipFile(selectedFile, finalPath.toFile());
+            File[] list = finalPath.toFile().listFiles();
+            AtomicInteger count = new AtomicInteger();
+            Arrays.stream(list).filter(file -> file.isFile()).forEach(file -> {
+                String text = FileUtil.readStringByFile(file);
+                count.set(count.get() + setText(file.getName(), text));
+            });
+            Messages.showInfoMessage(MessageFormat.format("成功导入{0}个模版文件！", count), "提示");
         } catch (IOException e) {
             Messages.showErrorDialog(e.getMessage(), "导入错误！");
         } finally {

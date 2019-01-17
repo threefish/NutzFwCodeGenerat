@@ -195,7 +195,7 @@ public class FileUtil {
         Path newFile;
         do {
             //如果文件存在
-            newFile = Paths.get(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString().replace("-", ""), folderName);
+            newFile = Paths.get(System.getProperty("java.io.tmpdir"), "NutzFw", UUID.randomUUID().toString().replace("-", ""), folderName);
         } while (newFile.toFile().exists());
         Files.createDirectories(newFile);
         return newFile;
