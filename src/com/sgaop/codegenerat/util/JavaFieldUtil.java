@@ -1,6 +1,5 @@
 package com.sgaop.codegenerat.util;
 
-import com.google.common.base.Strings;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttribute;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttributeValue;
 import com.intellij.lang.jvm.annotation.JvmAnnotationConstantValue;
