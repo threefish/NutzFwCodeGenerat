@@ -128,7 +128,12 @@ public class CreateServiceImplFram extends JDialog {
                 Messages.showInfoMessage(pluginrInfo.getProject(), "代码生成完成！", "生成完成");
             }
         } catch (Throwable ex) {
-            JOptionPane.showMessageDialog(this.rootPane, ex.getMessage(), "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            String errorMsg = ex.getMessage();
+            if (errorMsg == null && ex.getCause() != null) {
+                errorMsg = ex.getCause().getMessage();
+            }
+            JOptionPane.showMessageDialog(this.rootPane, errorMsg, "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            throw ex;
         }
     }
 
@@ -211,7 +216,9 @@ public class CreateServiceImplFram extends JDialog {
      */
     private void refreshPath(Path path) {
         VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(path.toUri().toString());
-        value.refresh(true, true);
+        if (value != null) {
+            value.refresh(true, true);
+        }
     }
 
     private HashMap getBindData(JavaBaseVO baseVO) {

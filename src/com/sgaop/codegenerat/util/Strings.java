@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  * @date: 2019/1/20 0020
  */
 public class Strings {
+
     public static boolean isNullOrEmpty(@Nullable String s) {
         return s == null || s.isEmpty();
     }
