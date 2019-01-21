@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.sgaop.codegenerat.nutzfw</id>
-    <name>NutzFw</name>
-    <version>1.0.3</version>
+    <name>NutzFw Code Generat</name>
+    <version>1.0.5</version>
     <vendor email="huchuc@vip.qq.com" url="https://github.com/threefish/NutzFw">threefish</vendor>
     <description><![CDATA[
       <h1>Intellij idea plugin for <a href="https://github.com/threefish/NutzFw">NutzFw</a></h1>
