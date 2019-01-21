@@ -1,18 +1,24 @@
 # NutzFw Code Generat
 ## 代码生成器
 
-- 模版语法采用BEETL
-```java   
-        /** 模板占位起始符号 */
-       	String placeholderStart = "#[";
-       	/** 模板占位结束符号 */
-       	String placeholderEnd = "]";
-       	/** 控制语句起始符号 */
-       	String statementStart = "<##";
-       	/** 控制语句结束符号 */
-       	String statementEnd = "##>";
-```
-
+### 模版修改 
+   -  Settings >> Editor >> File and Code Templates >> Other >> NutzFw
+   
+- [NutzFw项目模版下载地址](https://github.com/threefish/NutzFwCodeGenerat/tree/master/release)
+  - 如不是[NutzFw](https://github.com/threefish/NutzFw)项目，请务必修改模版
+ 
+ ### 模版语法采用BEETL
+ ```java   
+         /** 模板占位起始符号 */
+        	String placeholderStart = "#[";
+        	/** 模板占位结束符号 */
+        	String placeholderEnd = "]";
+        	/** 控制语句起始符号 */
+        	String statementStart = "<##";
+        	/** 控制语句结束符号 */
+        	String statementEnd = "##>";
+ ```
+    
 - 变量列表
 
     | 变量名   |      类型      |  意义 |
@@ -46,6 +52,7 @@
     | type |String | JAVA字段类型 |无|
     | fullType |String | JAVA字段类型包含引用 |无|
     | date | boolean| 是否日期 |false|
+    | 以下为NutzFw项目专用|
     | dict |boolean | 是否字典 |false|
     | dictCode |String | 字典Code |无|
     | required |boolean | 是否必填必选字段 |false|
