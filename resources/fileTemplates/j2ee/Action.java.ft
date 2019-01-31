@@ -20,7 +20,13 @@ import org.nutz.mvc.annotation.*;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.plugins.validation.Errors;
-
+<##if(base.oneOneRelation){##>
+import java.util.ArrayList;
+import java.util.List;
+<##for(field in fields){##>
+<##if(field.oneOne){##>
+import #[field.oneOneClassQualifiedName];
+<##}}}##>
 /**
  * @author #[base.user] xxx@qq.com
  * @date #[date(), dateFormat="yyyy年MM月dd日"]
@@ -38,6 +44,32 @@ public class #[base.actionFileName] {
 
     @Inject
     DictBiz dictBiz;
+
+    <##if(base.oneOneRelation){##>
+    <##for(field in fields){##>
+    <##if(field.oneOne){##>
+    @Inject
+    #[base.servicePackage].#[field.oneOneClassName]Service #[sp.uncapitalize(field.oneOneClassName)]Service;
+
+     /**
+     * 关联表信息
+     *
+     * @param key
+     * @return
+     */
+     @POST
+     @At("/relation#[field.oneOneClassName]")
+     @Ok("json:{ignoreNull:false,dateFormat:'yyyy-MM-dd'}")
+     @RequiresPermissions("#[base.entityName].index")
+     public List<NutMap> relation#[field.oneOneClassName](@Param("key") String key) {
+         List<NutMap> list = new ArrayList<>();
+         key = "%" + key + "%";
+         List<Company> companyList = companyService.query(Cnd.where("name", "like", key));
+         companyList.forEach(company -> list.add(new NutMap().setv("id", company.getUuid()).setv("text", company.getName())));
+         return list;
+     }
+
+    <##}}}##>
 
     /**
      * 管理页面

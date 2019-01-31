@@ -125,9 +125,20 @@ layout("/layouts/blank.html",{title:title}){
                 <div class="box-tips">填写提示：#[field.placeholder]</div>
             </div>
         </div>
-        <##}else if(!field.primaryKey){##>
+        <##}else if(field.oneOne){##>
+        <!-- 单表关联 -->
         <div class="form-group col-xs-6">
             <label>#[field.comment]</label>
+            <div id="#[field.name]" class="form-control"></div>
+        </div>
+        <##}else if(!field.primaryKey){##>
+        <div class="form-group col-xs-6">
+            <label>
+            <##if(!field.required){##>
+            <span class="required">*</span>
+            <##}##>
+            #[field.comment]
+            </label>
             <input type="text" v-model="fromData.#[field.name]" :disabled="!fromDataEdit" class="form-control"
                    placeholder="#[field.placeholder]" maxlength="#[field.maxLength]">
         </div>
@@ -150,6 +161,10 @@ layout("/layouts/blank.html",{title:title}){
         return count;
     }
 </script>
+<##}##>
+<##if(base.oneOneRelation){##>
+<link rel="stylesheet" href="${base!}/static/plugins/tinyselect/tinyselect.css?_=${productVersion}">
+<script src="${base!}/static/plugins/tinyselect/tinyselect.js?_=${productVersion}"></script>
 <##}##>
 <##if(base.richText){##>
 <script type="text/javascript" charset="utf-8"
@@ -260,6 +275,20 @@ layout("/layouts/blank.html",{title:title}){
                 })
             });
             <##}##>
+         <##if(base.oneOneRelation){##>
+        <##for(field in fields){##>
+        <##if(field.oneOne){##>
+            tinyselect('##[field.name]', {
+                ajax: {
+                    url: '${base!}/#[base.entityName]/relation#[field.oneOneClassName]',
+                    type: 'POST',
+                    key: "key",
+                },
+            }).on("select", function (e) {
+                vm.fromData.#[field.oneOneField]=e.data.id;
+                vm.fromData.#[field.name]=e.data.text;
+            });
+        <##}}}##>
         }
     });
 </script>
