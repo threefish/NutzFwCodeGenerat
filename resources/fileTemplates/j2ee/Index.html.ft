@@ -174,9 +174,9 @@ layout("/layouts/blank.html",{title:title}){
                         }
                     },
                     <##}else if(field.attachment && field.attachmentAllIsImg){##>
-                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","minWidth": 120},
+                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","width": 100},
                     <##}else if(field.attachment){##>
-                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","minWidth": 120},
+                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","width": 100},
                     <##}else if(!field.primaryKey&&field.show){##>
                      {field: '#[field.name]', title: '#[field.comment]'},
                     <##}}##>
