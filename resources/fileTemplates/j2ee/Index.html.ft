@@ -149,44 +149,44 @@ layout("/layouts/blank.html",{title:title}){
         layui.use(['table'], function () {
             table = layui.table;
             listTable = table.render({
-                        id: 'listTable',
-                        elem: '#listTable',
-                        page: true,
-                        method: 'post',
-                        url: base + '/#[base.entityName]/list',
-                        height: 'full-140',
-                        limit: 50,
-                        even: false,
-                        toolbar: '#topToolbar',
-                        defaultToolbar: ['filter', 'print'],
-                        request: {
-                            pageName: 'pageNum',
-                            limitName: 'pageSize',
-                        },
-                        where: vm.searchData,
-                        cols: [[
-                                    {title: '序号', type: 'numbers', width: 50},
-                                    {type: 'checkbox'},
-                                <## for(field in fields){ ##>
-                                <## if(field.dict){ ##>
-                                {field: '#[field.name]', title: '#[field.comment]', templet: function (row) {
-                                        return #[field.dictCode][row.#[field.name]];
-                                    }
-                                },
-                                <##}else if(field.attachment && field.attachmentAllIsImg){##>
-                                {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","minWidth": 120},
+                id: 'listTable',
+                elem: '#listTable',
+                page: true,
+                method: 'post',
+                url: base + '/#[base.entityName]/list',
+                height: 'full-140',
+                limit: 50,
+                even: false,
+                toolbar: '#topToolbar',
+                defaultToolbar: ['filter', 'print'],
+                request: {
+                    pageName: 'pageNum',
+                    limitName: 'pageSize',
+                },
+                where: vm.searchData,
+                cols: [[
+                    {title: '序号', type: 'numbers', width: 50},
+                    {type: 'checkbox'},
+                    <## for(field in fields){ ##>
+                    <## if(field.dict){ ##>
+                    {field: '#[field.name]', title: '#[field.comment]', templet: function (row) {
+                            return #[field.dictCode][row.#[field.name]];
+                        }
+                    },
+                    <##}else if(field.attachment && field.attachmentAllIsImg){##>
+                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeImgTpl","minWidth": 120},
                     <##}else if(field.attachment){##>
-                    {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","minWidth": 120},
+                     {field: '#[field.name]', title: '#[field.comment]',"templet": "#AttachTypeTpl","minWidth": 120},
                     <##}else if(!field.primaryKey&&field.show){##>
-                    {field: '#[field.name]', title: '#[field.comment]'},
-        <##}}##>
-            {field: 'opAt', title: '创建时间'},
-            {title: '操作', width: 160, align: 'center', toolbar: '#toolBarFixed'},
-        ]],
-            done: function () {
-                $('.layui-table-fixed-r').removeClass('layui-hide');
-            }
-        });
+                     {field: '#[field.name]', title: '#[field.comment]'},
+                    <##}}##>
+                     {field: 'opAt', title: '创建时间'},
+                     {title: '操作', width: 160, align: 'center', toolbar: '#toolBarFixed'},
+                  ]],
+                  done: function () {
+                      $('.layui-table-fixed-r').removeClass('layui-hide');
+                  }
+               });
             table.on("tool(listTable)", function (obj) {
                 var data = obj.data, layEvent = obj.event;
                 if (layEvent == "edit") {
@@ -195,7 +195,6 @@ layout("/layouts/blank.html",{title:title}){
                 if (layEvent == "view") {
                     vm.handleView(data.#[base.primaryKey]);
                 }
-
             <##if(base.attachment){##>
                 if (layEvent == 'showAttach') {
                     var dataField = $(obj.tr).find("div[lay-event=showAttach]").attr("data-field");

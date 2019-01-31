@@ -49,7 +49,11 @@ layout("/layouts/blank.html",{title:title}){
         <## for(field in fields){ ##>
          <## if(field.dict){ ##>
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
             <##if(field.multiDict){##>
             <div class="input-group" style="width: 100%;">
                 ${dict("#[field.dictCode]",true,'v-model=fromData.#[field.name]','class="tree width100"',':disabled="!fromDataEdit"','placeholder="#[field.placeholder]"')}
@@ -60,7 +64,11 @@ layout("/layouts/blank.html",{title:title}){
         </div>
         <##}else if(field.date){##>
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
             <div class="input-group">
                 <input type="text" v-model="fromData.#[field.name]" data-fieldname="#[field.name]"
                        date-fomat="yyyy-MM-dd" date-type="date" readonly :disabled="!fromDataEdit"
@@ -73,7 +81,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 附件类型 -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-4 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -94,7 +102,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 多行文本框 -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-12 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -112,7 +120,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 富文本框 百度UE -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-12 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -128,13 +136,17 @@ layout("/layouts/blank.html",{title:title}){
         <##}else if(field.oneOne){##>
         <!-- 单表关联 -->
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
             <div id="#[field.name]" class="form-control"></div>
         </div>
         <##}else if(!field.primaryKey&&field.show){##>
         <div class="form-group col-xs-6">
             <label>
-            <##if(!field.required){##>
+            <##if(field.required){##>
             <span class="required">*</span>
             <##}##>
             #[field.comment]

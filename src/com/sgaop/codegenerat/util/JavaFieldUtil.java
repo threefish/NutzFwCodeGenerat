@@ -71,7 +71,8 @@ public class JavaFieldUtil {
         javaField.setComment(JavaFieldUtil.getComment(field));
         javaField.setType(field.getType().getPresentableText());
         javaField.setFullType(field.getType().getCanonicalText());
-
+        javaField.setShow(true);
+        javaField.setMaxLength(50);
         PsiAnnotation annotation = field.getAnnotation(DICT);
         if (annotation != null) {
             List<JvmAnnotationAttribute> attributes = annotation.getAttributes();
