@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.sgaop.codegenerat.nutzfw</id>
     <name>NutzFw Code Generat</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <vendor email="huchuc@vip.qq.com" url="https://github.com/threefish/NutzFw">threefish</vendor>
     <description><![CDATA[
       <h1>Intellij idea plugin for <a href="https://github.com/threefish/NutzFw">NutzFw</a></h1>
@@ -18,12 +18,14 @@
          <li> 1、Can quickly generate additional, delete, change, check, attachment upload, view, list display and other functions based on the annotation table structure</li>
          <li> 2、Can be enhanced by deploying template conten</li>
          <li> 3、Support for importing templates</li>
+         <li> 3、Add table association</li>
        </ul>
        <b>中文</b>
        <ul>
          <li> 1、可以快速生成基于注解表结构的增、删、改、查、附件上传、查看、列表展示等功能</li>
          <li> 2、可以通过调配模版内容加强功能</li>
-         <li> 2、支持导入模版</li>
+         <li> 3、支持导入模版</li>
+         <li> 4、添加表关联</li>
        </ul>
       </p>
       <br/>

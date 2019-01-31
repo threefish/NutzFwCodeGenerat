@@ -128,6 +128,9 @@ public class JavaFieldUtil {
                                 case "maxLength":
                                     javaField.setMaxLength(Integer.parseInt(value));
                                     break;
+                                case "show":
+                                    javaField.setShow(Boolean.parseBoolean(value));
+                                    break;
                                 case "oneOneField":
                                     javaField.setOneOneField(value);
                                     break;

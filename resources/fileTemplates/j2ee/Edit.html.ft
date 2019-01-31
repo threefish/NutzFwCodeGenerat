@@ -131,7 +131,7 @@ layout("/layouts/blank.html",{title:title}){
             <label>#[field.comment]</label>
             <div id="#[field.name]" class="form-control"></div>
         </div>
-        <##}else if(!field.primaryKey){##>
+        <##}else if(!field.primaryKey&&field.show){##>
         <div class="form-group col-xs-6">
             <label>
             <##if(!field.required){##>
@@ -276,19 +276,29 @@ layout("/layouts/blank.html",{title:title}){
             });
             <##}##>
          <##if(base.oneOneRelation){##>
+            setTimeout(function () {
         <##for(field in fields){##>
         <##if(field.oneOne){##>
-            tinyselect('##[field.name]', {
-                ajax: {
-                    url: '${base!}/#[base.entityName]/relation#[field.oneOneClassName]',
-                    type: 'POST',
-                    key: "key",
-                },
-            }).on("select", function (e) {
-                vm.fromData.#[field.oneOneField]=e.data.id;
-                vm.fromData.#[field.name]=e.data.text;
-            });
-        <##}}}##>
+                tinyselect('##[field.name]', {
+                    readonly: !vm.fromDataEdit,
+                    ajax: {
+                        url: '${base!}/#[base.entityName]/relation#[field.oneOneClassName]',
+                        type: 'POST',
+                        key: "key",
+                        param: function (key) {
+                            return {key: key, id: vm.fromData.#[field.oneOneField]};
+                        }
+                    },
+                    ready: function () {
+                        this.value(vm.fromData.#[field.oneOneField])
+                    }
+                }).on("select", function (e) {
+                    vm.fromData.#[field.oneOneField]=e.data.id;
+                    vm.fromData.#[field.name]=e.data.text;
+                });
+        <##}}##>
+        }, 0);
+        <##}##>
         }
     });
 </script>
