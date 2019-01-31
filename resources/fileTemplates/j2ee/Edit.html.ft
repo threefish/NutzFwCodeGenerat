@@ -1,5 +1,5 @@
 <%
-var title="#[funName]编辑";
+var title="#[base.funName]编辑";
 layout("/layouts/blank.html",{title:title}){
 %>
 <style type="text/css">
@@ -34,7 +34,7 @@ layout("/layouts/blank.html",{title:title}){
         line-height: 20px;
         color: #77b0e2;
     }
-     <##if(multiDict){##>
+     <##if(base.multiDict){##>
     .tree {
         width: calc(100% - 40px) !important;
     }
@@ -135,7 +135,7 @@ layout("/layouts/blank.html",{title:title}){
         <##}##>
     </div>
 </section>
-<##if(attachment){##>
+<##if(base.attachment){##>
 <script type="text/javascript">
     //计算附件个数
     String.prototype.fileCount = function () {
@@ -151,7 +151,7 @@ layout("/layouts/blank.html",{title:title}){
     }
 </script>
 <##}##>
-<##if(richText){##>
+<##if(base.richText){##>
 <script type="text/javascript" charset="utf-8"
         src="${base}/static/plugins/ueditor/ueditor.config.js?_=${productVersion}"></script>
 <script type="text/javascript" charset="utf-8"
@@ -160,7 +160,7 @@ layout("/layouts/blank.html",{title:title}){
         src="${base}/static/plugins/ueditor/lang/zh-cn/zh-cn.js?_=${productVersion}"></script>
 <##}##>
 <script type="text/javascript">
-    <##if(richText){##>
+    <##if(base.richText){##>
     var ue = new Object();
     var readOnly = "${data.fromDataEdit}" == "true";
     <##}##>
@@ -176,7 +176,7 @@ layout("/layouts/blank.html",{title:title}){
                 <##}}##>
             },
             fromDataSubmit: false,
-            <##if(richText){##>
+            <##if(base.richText){##>
             fromDataEdit: readOnly,
             <##}else{##>
             fromDataEdit: "${data.fromDataEdit}" == "true",
@@ -186,13 +186,13 @@ layout("/layouts/blank.html",{title:title}){
         methods: {
             init: function () {
                 this.initLoad = true;
-                if (this.fromData.#[primaryKey] != '') {
-                    $.post(base + "/#[entityName]/details", {#[primaryKey]: this.fromData.#[primaryKey]}, function (json) {
+                if (this.fromData.#[base.primaryKey] != '') {
+                    $.post(base + "/#[base.entityName]/details", {#[base.primaryKey]: this.fromData.#[base.primaryKey]}, function (json) {
                         vm.fromData = json.data;
                     });
                 }
             },
-        <##if(attachment){##>
+        <##if(base.attachment){##>
             handleAddAttach: function (fieldName, isMultiAttach, isImage, attachSuffix) {
                 core.handleAddAttach(fieldName, isMultiAttach, isImage, attachSuffix);
             },
@@ -200,7 +200,7 @@ layout("/layouts/blank.html",{title:title}){
                 core.showAttachList(this.fromData[fieldName]);
             },
         <##}##>
-        <##if(multiDict){##>
+        <##if(base.multiDict){##>
             reverEnumDesc: function (fieldName, sysCode) {
                 return core.postJSON("/sysDict/getDictName", {sysCode: sysCode, ids: this.fromData[fieldName]});
             },
@@ -240,7 +240,7 @@ layout("/layouts/blank.html",{title:title}){
                     });
                 });
             });
-            <##if(richText){##>
+            <##if(base.richText){##>
             $("[ueditor]").each(function () {
                 var fieldname = $(this).attr("data-fieldname");
                 ue[fieldname] = new UE.ui.Editor({

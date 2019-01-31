@@ -1,15 +1,15 @@
-package #[serviceImplPackage];
+package #[base.serviceImplPackage];
 
-import #[entityPackage].#[entityName];
-import #[servicePackage].#[serviceFileName];
+import #[base.entityPackage].#[base.entityName];
+import #[base.servicePackage].#[base.serviceFileName];
 import com.nutzfw.service.impl.BaseServiceImpl;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 /**
- * @author #[user] xxx@qq.com
+ * @author #[base.user] xxx@qq.com
  * @date #[date(), dateFormat="yyyy年MM月dd日 HH时mm分ss秒"]
  */
-@IocBean(args = {"refer:dao"}, name = "#[sp.uncapitalize(serviceFileName)]")
-public class #[serviceImplFileName] extends BaseServiceImpl<#[entityName]>  implements #[serviceFileName] {
-public #[serviceImplFileName](Dao dao){super(dao);}}
+@IocBean(args = {"refer:dao"}, name = "#[sp.uncapitalize(base.serviceFileName)]")
+public class #[base.serviceImplFileName] extends BaseServiceImpl<#[base.entityName]>  implements #[base.serviceFileName] {
+public #[base.serviceImplFileName](Dao dao){super(dao);}}

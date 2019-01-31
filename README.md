@@ -19,7 +19,7 @@
         	String statementEnd = "##>";
  ```
     
-- 变量列表
+- 变量列表 -- 使用#[base.变量名]取用
 
     | 变量名   |      类型      |  意义 |
     |----------|:-------------:|------:|
@@ -38,7 +38,6 @@
     | uuid | boolean | 主键是否是UUID |
     | richText | boolean | 是否有UE富文本编辑器 |
     | attachment | boolean | 是否有附件上传 |
-    | base | 对象 | 以上所有变量都可以使用#[base.变量名]取用 |
     | fields | List<JavaFieldVO> | 当前实体类的字段列表 |
     
 - 当前实体类的字段信息
@@ -63,5 +62,8 @@
     | attachSuffix |String | 限制附件格式(jpg,png)|xlsx,xls,png,jpg,doc,docx|
     | placeholder |String |提示信息|无|
     | maxLength |int |文本最大长度|10|
-    
+    | oneOne |boolean |是单表关联|false|
+    | oneOneField |String |表关联字段||
+    | oneOneClassName |String |表关联类||
+    | oneOneClassQualifiedName |String |表关联类全路径||
       

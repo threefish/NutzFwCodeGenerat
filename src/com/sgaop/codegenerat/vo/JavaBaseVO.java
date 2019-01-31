@@ -50,6 +50,18 @@ public class JavaBaseVO {
      * 多选字典
      */
     boolean multiDict;
+    /**
+     * 存在一对一表单关联
+     */
+    boolean oneOneRelation;
+
+    public boolean isOneOneRelation() {
+        return oneOneRelation;
+    }
+
+    public void setOneOneRelation(boolean oneOneRelation) {
+        this.oneOneRelation = oneOneRelation;
+    }
 
     public boolean isRichText() {
         return richText;

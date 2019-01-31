@@ -2,6 +2,7 @@ package com.sgaop.codegenerat.util;
 
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttribute;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttributeValue;
+import com.intellij.lang.jvm.annotation.JvmAnnotationClassValue;
 import com.intellij.lang.jvm.annotation.JvmAnnotationConstantValue;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiField;
@@ -79,9 +80,20 @@ public class JavaFieldUtil {
                     String name = attribute.getAttributeName();
                     try {
                         String value = ((PsiNameValuePairImpl) attribute).getLiteralValue();
+                        /**
+                         * 表关联类
+                         */
+                        String oneOneClassName = "";
+                        /**
+                         * 表关联类全路径
+                         */
+                        String oneOneClassQualifiedName = "";
                         JvmAnnotationAttributeValue attributeValue = attribute.getAttributeValue();
                         if (value == null && attributeValue instanceof JvmAnnotationConstantValue) {
                             value = ((JvmAnnotationConstantValue) attributeValue).getConstantValue().toString();
+                        } else if (value == null && attributeValue instanceof JvmAnnotationClassValue) {
+                            oneOneClassQualifiedName = ((JvmAnnotationClassValue) attributeValue).getQualifiedName();
+                            oneOneClassName = ((JvmAnnotationClassValue) attributeValue).getClazz().getName();
                         }
                         if (value != null) {
                             switch (name) {
@@ -116,9 +128,16 @@ public class JavaFieldUtil {
                                 case "maxLength":
                                     javaField.setMaxLength(Integer.parseInt(value));
                                     break;
+                                case "oneOneField":
+                                    javaField.setOneOneField(value);
+                                    break;
                                 default:
                                     break;
                             }
+                        } else if ("oneOne".equals(name) && !"".equals(oneOneClassName)) {
+                            javaField.setOneOne(true);
+                            javaField.setOneOneClassName(oneOneClassName);
+                            javaField.setOneOneClassQualifiedName(oneOneClassQualifiedName);
                         }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, javaField.getName() + ":" + e.getMessage(), "错误提示", JOptionPane.ERROR_MESSAGE, null);
