@@ -89,7 +89,7 @@ layout("/layouts/blank.html",{title:title}){
             <div class="col-sm-8">
                 <div class="form-control" style="border: none;">
                     <div class="layui-btn layui-btn-xs layui-btn-normal"
-                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],'#[field.attachSuffix]')">
+                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],'#[field.attachSuffix]','temp')">
                         添加
                     </div>
                     <div class="layui-btn layui-btn-xs layui-btn-normal"
