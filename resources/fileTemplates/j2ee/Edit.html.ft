@@ -1,5 +1,5 @@
 <%
-var title="#[funName]编辑";
+var title="#[base.funName]编辑";
 layout("/layouts/blank.html",{title:title}){
 %>
 <style type="text/css">
@@ -34,7 +34,7 @@ layout("/layouts/blank.html",{title:title}){
         line-height: 20px;
         color: #77b0e2;
     }
-     <##if(multiDict){##>
+     <##if(base.multiDict){##>
     .tree {
         width: calc(100% - 40px) !important;
     }
@@ -49,7 +49,11 @@ layout("/layouts/blank.html",{title:title}){
         <## for(field in fields){ ##>
          <## if(field.dict){ ##>
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
             <##if(field.multiDict){##>
             <div class="input-group" style="width: 100%;">
                 ${dict("#[field.dictCode]",true,'v-model=fromData.#[field.name]','class="tree width100"',':disabled="!fromDataEdit"','placeholder="#[field.placeholder]"')}
@@ -60,7 +64,11 @@ layout("/layouts/blank.html",{title:title}){
         </div>
         <##}else if(field.date){##>
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
             <div class="input-group">
                 <input type="text" v-model="fromData.#[field.name]" data-fieldname="#[field.name]"
                        date-fomat="yyyy-MM-dd" date-type="date" readonly :disabled="!fromDataEdit"
@@ -73,7 +81,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 附件类型 -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-4 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -81,7 +89,7 @@ layout("/layouts/blank.html",{title:title}){
             <div class="col-sm-8">
                 <div class="form-control" style="border: none;">
                     <div class="layui-btn layui-btn-xs layui-btn-normal"
-                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],'#[field.attachSuffix]')">
+                         @click="handleAddAttach('#[field.name]',#[field.attachmentMultiple],#[field.attachmentAllIsImg],'#[field.attachSuffix]','temp')">
                         添加
                     </div>
                     <div class="layui-btn layui-btn-xs layui-btn-normal"
@@ -94,7 +102,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 多行文本框 -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-12 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -112,7 +120,7 @@ layout("/layouts/blank.html",{title:title}){
         <!-- 富文本框 百度UE -->
         <div class="form-group clearfix" style="width: 100%">
             <label class="col-sm-12 control-label">
-                <##if(!field.required){##>
+                <##if(field.required){##>
                 <span class="required">*</span>
                 <##}##>
                 #[field.comment]
@@ -125,9 +133,24 @@ layout("/layouts/blank.html",{title:title}){
                 <div class="box-tips">填写提示：#[field.placeholder]</div>
             </div>
         </div>
-        <##}else if(!field.primaryKey){##>
+        <##}else if(field.oneOne){##>
+        <!-- 单表关联 -->
         <div class="form-group col-xs-6">
-            <label>#[field.comment]</label>
+            <label>
+                <##if(field.required){##>
+                <span class="required">*</span>
+                <##}##>
+                #[field.comment]</label>
+            <div id="#[field.name]" class="form-control"></div>
+        </div>
+        <##}else if(!field.primaryKey&&field.show){##>
+        <div class="form-group col-xs-6">
+            <label>
+            <##if(field.required){##>
+            <span class="required">*</span>
+            <##}##>
+            #[field.comment]
+            </label>
             <input type="text" v-model="fromData.#[field.name]" :disabled="!fromDataEdit" class="form-control"
                    placeholder="#[field.placeholder]" maxlength="#[field.maxLength]">
         </div>
@@ -135,7 +158,7 @@ layout("/layouts/blank.html",{title:title}){
         <##}##>
     </div>
 </section>
-<##if(attachment){##>
+<##if(base.attachment){##>
 <script type="text/javascript">
     //计算附件个数
     String.prototype.fileCount = function () {
@@ -151,7 +174,11 @@ layout("/layouts/blank.html",{title:title}){
     }
 </script>
 <##}##>
-<##if(richText){##>
+<##if(base.oneOneRelation){##>
+<link rel="stylesheet" href="${base!}/static/plugins/tinyselect/tinyselect.css?_=${productVersion}">
+<script src="${base!}/static/plugins/tinyselect/tinyselect.js?_=${productVersion}"></script>
+<##}##>
+<##if(base.richText){##>
 <script type="text/javascript" charset="utf-8"
         src="${base}/static/plugins/ueditor/ueditor.config.js?_=${productVersion}"></script>
 <script type="text/javascript" charset="utf-8"
@@ -160,7 +187,7 @@ layout("/layouts/blank.html",{title:title}){
         src="${base}/static/plugins/ueditor/lang/zh-cn/zh-cn.js?_=${productVersion}"></script>
 <##}##>
 <script type="text/javascript">
-    <##if(richText){##>
+    <##if(base.richText){##>
     var ue = new Object();
     var readOnly = "${data.fromDataEdit}" == "true";
     <##}##>
@@ -176,7 +203,7 @@ layout("/layouts/blank.html",{title:title}){
                 <##}}##>
             },
             fromDataSubmit: false,
-            <##if(richText){##>
+            <##if(base.richText){##>
             fromDataEdit: readOnly,
             <##}else{##>
             fromDataEdit: "${data.fromDataEdit}" == "true",
@@ -186,13 +213,13 @@ layout("/layouts/blank.html",{title:title}){
         methods: {
             init: function () {
                 this.initLoad = true;
-                if (this.fromData.#[primaryKey] != '') {
-                    $.post(base + "/#[entityName]/details", {#[primaryKey]: this.fromData.#[primaryKey]}, function (json) {
+                if (this.fromData.#[base.primaryKey] != '') {
+                    $.post(base + "/#[base.entityName]/details", {#[base.primaryKey]: this.fromData.#[base.primaryKey]}, function (json) {
                         vm.fromData = json.data;
                     });
                 }
             },
-        <##if(attachment){##>
+        <##if(base.attachment){##>
             handleAddAttach: function (fieldName, isMultiAttach, isImage, attachSuffix) {
                 core.handleAddAttach(fieldName, isMultiAttach, isImage, attachSuffix);
             },
@@ -200,7 +227,7 @@ layout("/layouts/blank.html",{title:title}){
                 core.showAttachList(this.fromData[fieldName]);
             },
         <##}##>
-        <##if(multiDict){##>
+        <##if(base.multiDict){##>
             reverEnumDesc: function (fieldName, sysCode) {
                 return core.postJSON("/sysDict/getDictName", {sysCode: sysCode, ids: this.fromData[fieldName]});
             },
@@ -240,7 +267,7 @@ layout("/layouts/blank.html",{title:title}){
                     });
                 });
             });
-            <##if(richText){##>
+            <##if(base.richText){##>
             $("[ueditor]").each(function () {
                 var fieldname = $(this).attr("data-fieldname");
                 ue[fieldname] = new UE.ui.Editor({
@@ -260,6 +287,30 @@ layout("/layouts/blank.html",{title:title}){
                 })
             });
             <##}##>
+         <##if(base.oneOneRelation){##>
+            setTimeout(function () {
+        <##for(field in fields){##>
+        <##if(field.oneOne){##>
+                tinyselect('##[field.name]', {
+                    readonly: !vm.fromDataEdit,
+                    ajax: {
+                        url: '${base!}/#[base.entityName]/relation#[field.oneOneClassName]',
+                        type: 'POST',
+                        key: "key",
+                        param: function (key) {
+                            return {key: key, id: vm.fromData.#[field.oneOneField]};
+                        }
+                    },
+                    ready: function () {
+                        this.value(vm.fromData.#[field.oneOneField])
+                    }
+                }).on("select", function (e) {
+                    vm.fromData.#[field.oneOneField]=e.data.id;
+                    vm.fromData.#[field.name]=e.data.text;
+                });
+        <##}}##>
+        }, 0);
+        <##}##>
         }
     });
 </script>

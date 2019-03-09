@@ -128,7 +128,12 @@ public class CreateServiceImplFram extends JDialog {
                 Messages.showInfoMessage(pluginrInfo.getProject(), "代码生成完成！", "生成完成");
             }
         } catch (Throwable ex) {
-            JOptionPane.showMessageDialog(this.rootPane, ex.getMessage(), "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            String errorMsg = ex.getMessage();
+            if (errorMsg == null && ex.getCause() != null) {
+                errorMsg = ex.getCause().getMessage();
+            }
+            JOptionPane.showMessageDialog(this.rootPane, errorMsg, "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            throw ex;
         }
     }
 
@@ -157,15 +162,15 @@ public class CreateServiceImplFram extends JDialog {
                 baseVO.setUuid(true);
             }
         }
-        baseVO.setRichText(javaFields.stream().filter(javaFieldVO -> javaFieldVO.getText() == 4).findFirst() != null);
+        baseVO.setRichText(javaFields.stream().filter(javaFieldVO -> javaFieldVO.getText() == 4).findFirst().isPresent());
         baseVO.setAttachment(javaFields.stream().filter(JavaFieldVO::isAttachment).findFirst() != null);
         baseVO.setMultiDict(javaFields.stream().filter(JavaFieldVO::isMultiDict).findFirst() != null);
+        baseVO.setOneOneRelation(javaFields.stream().filter(JavaFieldVO::isOneOne).findFirst() != null);
         String templatePath = this.basePathText.getText();
         int start = templatePath.indexOf("WEB-INF");
         baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
         baseVO.setUser(System.getProperties().getProperty("user.name"));
-
-        HashMap bindData = getBindData(baseVO);
+        HashMap bindData = new HashMap(2);
         bindData.put("base", baseVO);
         bindData.put("fields", pluginrInfo.getJavaFields());
         return bindData;
@@ -211,29 +216,11 @@ public class CreateServiceImplFram extends JDialog {
      */
     private void refreshPath(Path path) {
         VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(path.toUri().toString());
-        value.refresh(true, true);
+        if (value != null) {
+            value.refresh(true, true);
+        }
     }
 
-    private HashMap getBindData(JavaBaseVO baseVO) {
-        HashMap bindData = new HashMap(11);
-        bindData.put("entityName", baseVO.getEntityName());
-        bindData.put("entityPackage", baseVO.getEntityPackage());
-        bindData.put("serviceFileName", baseVO.getServiceFileName());
-        bindData.put("servicePackage", baseVO.getServicePackage());
-        bindData.put("serviceImplFileName", baseVO.getServiceImplFileName());
-        bindData.put("serviceImplPackage", baseVO.getServiceImplPackage());
-        bindData.put("actionFileName", baseVO.getActionFileName());
-        bindData.put("actionPackage", baseVO.getActionPackage());
-        bindData.put("funName", baseVO.getFunName());
-        bindData.put("templatePath", baseVO.getTemplatePath());
-        bindData.put("user", baseVO.getUser());
-        bindData.put("uuid", baseVO.isUuid());
-        bindData.put("primaryKey", baseVO.getPrimaryKey());
-        bindData.put("richText", baseVO.isRichText());
-        bindData.put("attachment", baseVO.isAttachment());
-        bindData.put("multiDict", baseVO.isMultiDict());
-        return bindData;
-    }
 
     private Path getPath(String basePath, String packages) {
         String[] s1 = packages.split("\\.");

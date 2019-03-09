@@ -66,6 +66,13 @@ public class JavaFieldVO {
     boolean required;
 
     /**
+     * 是否显示
+     *
+     * @return
+     */
+    boolean show;
+
+    /**
      * 是富文本
      *
      * @return
@@ -115,13 +122,27 @@ public class JavaFieldVO {
      */
     int maxLength;
 
-    public boolean isMultiDict() {
-        return multiDict;
-    }
 
-    public void setMultiDict(boolean multiDict) {
-        this.multiDict = multiDict;
-    }
+    /**
+     * 是单表关联
+     *
+     * @return
+     */
+    boolean oneOne;
+
+    /**
+     * 表关联字段
+     */
+    String oneOneField;
+
+    /**
+     * 表关联类
+     */
+    String oneOneClassName;
+    /**
+     * 表关联类全路径
+     */
+    String oneOneClassQualifiedName;
 
     public String getName() {
         return name;
@@ -187,6 +208,14 @@ public class JavaFieldVO {
         this.dict = dict;
     }
 
+    public boolean isMultiDict() {
+        return multiDict;
+    }
+
+    public void setMultiDict(boolean multiDict) {
+        this.multiDict = multiDict;
+    }
+
     public String getDictCode() {
         return dictCode;
     }
@@ -203,6 +232,14 @@ public class JavaFieldVO {
         this.required = required;
     }
 
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
+    }
+
     public int getText() {
         return text;
     }
@@ -217,29 +254,6 @@ public class JavaFieldVO {
 
     public void setAttachment(boolean attachment) {
         this.attachment = attachment;
-    }
-
-    @Override
-    public String toString() {
-        return "JavaFieldVO{" +
-                "name='" + name + '\'' +
-                ", primaryKey=" + primaryKey +
-                ", comment='" + comment + '\'' +
-                ", dbName='" + dbName + '\'' +
-                ", type='" + type + '\'' +
-                ", fullType='" + fullType + '\'' +
-                ", date=" + date +
-                ", dict=" + dict +
-                ", dictCode='" + dictCode + '\'' +
-                ", required=" + required +
-                ", text=" + text +
-                ", attachment=" + attachment +
-                ", attachmentMultiple=" + attachmentMultiple +
-                ", attachmentAllIsImg=" + attachmentAllIsImg +
-                ", attachSuffix='" + attachSuffix + '\'' +
-                ", placeholder='" + placeholder + '\'' +
-                ", maxLength=" + maxLength +
-                '}';
     }
 
     public boolean isAttachmentMultiple() {
@@ -280,5 +294,66 @@ public class JavaFieldVO {
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    public boolean isOneOne() {
+        return oneOne;
+    }
+
+    public void setOneOne(boolean oneOne) {
+        this.oneOne = oneOne;
+    }
+
+    public String getOneOneField() {
+        return oneOneField;
+    }
+
+    public void setOneOneField(String oneOneField) {
+        this.oneOneField = oneOneField;
+    }
+
+    public String getOneOneClassName() {
+        return oneOneClassName;
+    }
+
+    public void setOneOneClassName(String oneOneClassName) {
+        this.oneOneClassName = oneOneClassName;
+    }
+
+    public String getOneOneClassQualifiedName() {
+        return oneOneClassQualifiedName;
+    }
+
+    public void setOneOneClassQualifiedName(String oneOneClassQualifiedName) {
+        this.oneOneClassQualifiedName = oneOneClassQualifiedName;
+    }
+
+    @Override
+    public String toString() {
+        return "JavaFieldVO{" +
+                "name='" + name + '\'' +
+                ", primaryKey=" + primaryKey +
+                ", comment='" + comment + '\'' +
+                ", dbName='" + dbName + '\'' +
+                ", type='" + type + '\'' +
+                ", fullType='" + fullType + '\'' +
+                ", date=" + date +
+                ", dict=" + dict +
+                ", multiDict=" + multiDict +
+                ", dictCode='" + dictCode + '\'' +
+                ", required=" + required +
+                ", show=" + show +
+                ", text=" + text +
+                ", attachment=" + attachment +
+                ", attachmentMultiple=" + attachmentMultiple +
+                ", attachmentAllIsImg=" + attachmentAllIsImg +
+                ", attachSuffix='" + attachSuffix + '\'' +
+                ", placeholder='" + placeholder + '\'' +
+                ", maxLength=" + maxLength +
+                ", oneOne=" + oneOne +
+                ", oneOneField='" + oneOneField + '\'' +
+                ", oneOneClassName='" + oneOneClassName + '\'' +
+                ", oneOneClassQualifiedName='" + oneOneClassQualifiedName + '\'' +
+                '}';
     }
 }
