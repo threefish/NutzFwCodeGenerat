@@ -8,7 +8,6 @@ import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.impl.source.tree.java.PsiNameValuePairImpl;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
-import com.yourkit.util.Strings;
 
 import javax.swing.*;
 import java.util.List;
