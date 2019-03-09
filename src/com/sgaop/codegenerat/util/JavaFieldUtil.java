@@ -1,6 +1,5 @@
 package com.sgaop.codegenerat.util;
 
-import com.google.common.base.Strings;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttribute;
 import com.intellij.lang.jvm.annotation.JvmAnnotationAttributeValue;
 import com.intellij.lang.jvm.annotation.JvmAnnotationConstantValue;
@@ -8,6 +7,7 @@ import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.impl.source.tree.java.PsiNameValuePairImpl;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
+import com.yourkit.util.Strings;
 
 import javax.swing.*;
 import java.util.List;
