@@ -154,8 +154,9 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setActionFileName(this.actionFileName);
         baseVO.setActionPackage(this.actionPackage);
         baseVO.setFunName(this.funNameText.getText());
+        baseVO.setUser(System.getProperties().getProperty("user.name"));
         Optional optional = javaFields.stream().filter(JavaFieldVO::isPrimaryKey).findFirst();
-        if (optional.get() != null) {
+        if (optional.isPresent()) {
             JavaFieldVO field = (JavaFieldVO) optional.get();
             baseVO.setPrimaryKey(field.getDbName());
             if ("uuid".equals(field.getDbName().toLowerCase())) {
@@ -167,9 +168,10 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setMultiDict(javaFields.stream().filter(JavaFieldVO::isMultiDict).findFirst() != null);
         baseVO.setOneOneRelation(javaFields.stream().filter(JavaFieldVO::isOneOne).findFirst() != null);
         String templatePath = this.basePathText.getText();
-        int start = templatePath.indexOf("WEB-INF");
-        baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
-        baseVO.setUser(System.getProperties().getProperty("user.name"));
+        if(this.htmlPathCheckBox.isSelected()){
+            int start = templatePath.indexOf("WEB-INF");
+            baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
+        }
         HashMap bindData = new HashMap(2);
         bindData.put("base", baseVO);
         bindData.put("fields", pluginrInfo.getJavaFields());
