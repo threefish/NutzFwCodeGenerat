@@ -78,7 +78,7 @@ public class CodeGeneratAction extends DumbAwareAction {
                 String dbName = JavaFieldUtil.getDbNameAndIsColumn(field);
                 if (dbName != null) {
                     JavaFieldVO javaField = JavaFieldUtil.getNutzFw(field);
-                    javaField.setDbName(dbName);
+                    javaField.setColumnName(dbName);
                     javaFields.add(javaField);
                 }
             }

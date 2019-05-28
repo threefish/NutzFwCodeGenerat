@@ -158,8 +158,8 @@ public class CreateServiceImplFram extends JDialog {
         Optional optional = javaFields.stream().filter(JavaFieldVO::isPrimaryKey).findFirst();
         if (optional.isPresent()) {
             JavaFieldVO field = (JavaFieldVO) optional.get();
-            baseVO.setPrimaryKey(field.getDbName());
-            if ("uuid".equals(field.getDbName().toLowerCase())) {
+            baseVO.setPrimaryKey(field.getColumnName());
+            if ("uuid".equals(field.getColumnName().toLowerCase())) {
                 baseVO.setUuid(true);
             }
         }

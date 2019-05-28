@@ -21,9 +21,9 @@ public class JavaFieldVO {
     String comment;
 
     /**
-     * 数据库字段值
+     * 数据库字段名
      */
-    String dbName;
+    String columnName;
 
     /**
      * JAVA字段类型
@@ -168,12 +168,12 @@ public class JavaFieldVO {
         this.comment = comment;
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getColumnName() {
+        return columnName;
     }
 
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public String getType() {
@@ -334,7 +334,7 @@ public class JavaFieldVO {
                 "name='" + name + '\'' +
                 ", primaryKey=" + primaryKey +
                 ", comment='" + comment + '\'' +
-                ", dbName='" + dbName + '\'' +
+                ", columnName='" + columnName + '\'' +
                 ", type='" + type + '\'' +
                 ", fullType='" + fullType + '\'' +
                 ", date=" + date +

@@ -47,7 +47,7 @@
     | name | String| JAVA字段名称 | 无|
     | primaryKey| boolean| 主键 |false|
     | comment | String| 字段描述  |无|
-    | dbName| String| 数据库字段值 |无|
+    | columnName| String| 数据库字段名 |无|
     | type |String | JAVA字段类型 |无|
     | fullType |String | JAVA字段类型包含引用 |无|
     | date | boolean| 是否日期 |false|
