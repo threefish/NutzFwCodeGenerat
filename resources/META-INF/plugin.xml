@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.sgaop.codegenerat.nutzfw</id>
     <name>NutzFw Code Generat</name>
-    <version>1.0.6.fix</version>
+    <version>1.0.7</version>
     <vendor email="huchuc@vip.qq.com" url="https://github.com/threefish/NutzFw">threefish</vendor>
     <description><![CDATA[
       <h1>Intellij idea plugin for <a href="https://github.com/threefish/NutzFw">NutzFw</a></h1>
@@ -23,9 +23,8 @@
        <b>中文</b>
        <ul>
          <li> 1、可以快速生成基于注解表结构的增、删、改、查、附件上传、查看、列表展示等功能</li>
-         <li> 2、可以通过调配模版内容加强功能</li>
-         <li> 3、支持导入模版</li>
-         <li> 4、添加表关联</li>
+         <li> 2、自动识别模版目录下的所有文件夹为模版</li>
+         <li> 3、添加表关联</li>
        </ul>
       </p>
       <br/>
@@ -33,13 +32,10 @@
     ]]>
     </description>
     <change-notes><![CDATA[
-        <b>1.0.6.fix</b>
+        <b>1.0.7</b>
        <ul>
-        <li>bug fix</li>
-        <li>bug fix</li>
-        <li>bug fix</li>
-        <li>bug fix</li>
-        <li>bug fix</li>
+        <li>升级为通用版本</li>
+        <li>移除导入模版功能，升级为目录扫描。自动识别模版目录下的所有文件夹为模版。</li>
       </p>
     ]]>
     </change-notes>
@@ -59,5 +55,4 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
-
 </idea-plugin>

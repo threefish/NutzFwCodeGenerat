@@ -2,8 +2,10 @@ package com.sgaop.codegenerat.ui;
 
 import com.intellij.ide.actions.OpenProjectFileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.roots.impl.JavaProjectModelModificationServiceImpl;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
@@ -33,16 +35,16 @@ import java.util.Optional;
  * 自动生成接口和实现类
  */
 public class CreateServiceImplFram extends JDialog {
-    ProjectPluginConfig pluginrInfo;
-    String entityPackage;
-    String entityName;
-    String serviceFileName;
-    String serviceImplFileName;
-    String servicePackage;
-    String serviceImplPackage;
-    String actionPackage;
-    String actionFileName;
-    String htmlPaths;
+    private ProjectPluginConfig pluginrInfo;
+    private String entityPackage;
+    private String entityName;
+    private String serviceFileName;
+    private String serviceImplFileName;
+    private String servicePackage;
+    private String serviceImplPackage;
+    private String actionPackage;
+    private String actionFileName;
+    private String htmlPaths;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -98,18 +100,13 @@ public class CreateServiceImplFram extends JDialog {
             OpenProjectFileChooserDescriptor descriptor = new OpenProjectFileChooserDescriptor(false, false);
             descriptor.setHideIgnored(true);
             descriptor.setShowFileSystemRoots(false);
-            descriptor.setRoots(pluginEditorInfo.getProject().getBaseDir());
-            descriptor.setTitle("请选择WEB-INF下的目录");
+            descriptor.setRoots(LocalFileSystem.getInstance().findFileByPath(pluginEditorInfo.getProject().getBasePath()));
+            descriptor.setTitle("请选择html生成目录");
             FileChooser.chooseFiles(descriptor, pluginEditorInfo.getProject(), null, virtualFiles -> {
                 VirtualFile virtualFile = virtualFiles.get(0);
                 String selectPath = virtualFile.getCanonicalPath();
-                int start = selectPath.indexOf("WEB-INF");
-                if (start == -1) {
-                    Messages.showErrorDialog("请选择WEB-INF下的目录", "错误提示");
-                } else {
-                    selectPath = selectPath.replace("\\\\", "/").replace("\\", "/");
-                    basePathText.setText(selectPath);
-                }
+                selectPath = selectPath.replace("\\\\", "/").replace("\\", "/");
+                basePathText.setText(selectPath);
             });
         }));
         Path path = Paths.get(configuration.getTemplatePath());
@@ -226,38 +223,6 @@ public class CreateServiceImplFram extends JDialog {
         }
 
     }
-    /**
-     * 生成文件
-     *
-     * @param moduleBasePath
-     * @param bindData
-     */
-    /*private void renderBak(String moduleBasePath, HashMap bindData) {
-        ITemplteEngine renderTemplte = new BeetlTemplteEngine();
-        FileTemplateManager fileTemplateManager = FileTemplateManager.getInstance(pluginrInfo.getProject());
-        if (this.serviceCheckBox.isSelected()) {
-            FileTemplate service = fileTemplateManager.getJ2eeTemplate("Service");
-            Path path = renderTemplte.renderToFile(service.getText(), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.implCheckBox.isSelected()) {
-            FileTemplate serviceImpl = fileTemplateManager.getJ2eeTemplate("ServiceImpl");
-            Path path = renderTemplte.renderToFile(serviceImpl.getText(), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.actionCheckBox.isSelected()) {
-            FileTemplate actionImpl = fileTemplateManager.getJ2eeTemplate("Action");
-            Path path = renderTemplte.renderToFile(actionImpl.getText(), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.htmlPathCheckBox.isSelected()) {
-            FileTemplate indexHtml = fileTemplateManager.getJ2eeTemplate("Index");
-            FileTemplate editHtml = fileTemplateManager.getJ2eeTemplate("Edit");
-            renderTemplte.renderToFile(indexHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "index.html"));
-            Path path = renderTemplte.renderToFile(editHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
-            refreshPath(path);
-        }
-    }*/
 
     /**
      * 刷新目录
