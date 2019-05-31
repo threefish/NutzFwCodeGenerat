@@ -15,6 +15,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.util.PsiUtilBase;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
+import com.sgaop.codegenerat.project.ToolCfigurationData;
 import com.sgaop.codegenerat.ui.CreateServiceImplFram;
 import com.sgaop.codegenerat.util.JavaFieldUtil;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
@@ -31,6 +32,9 @@ import java.util.List;
  * 描述此类：
  */
 public class CodeGeneratAction extends DumbAwareAction {
+
+
+    private ToolCfigurationData configuration = ToolCfigurationData.getInstance();
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -82,7 +86,7 @@ public class CodeGeneratAction extends DumbAwareAction {
                     javaFields.add(javaField);
                 }
             }
-            CreateServiceImplFram dialog = new CreateServiceImplFram(
+            CreateServiceImplFram dialog = new CreateServiceImplFram(configuration,
                     new ProjectPluginConfig(applicationManager, processor, document, project, editor, psiFile, javaFields),
                     packageName, filename);
             dialog.pack();

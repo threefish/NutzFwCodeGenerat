@@ -36,13 +36,20 @@
         <b>1.0.6.fix</b>
        <ul>
         <li>bug fix</li>
+        <li>bug fix</li>
+        <li>bug fix</li>
+        <li>bug fix</li>
+        <li>bug fix</li>
       </p>
     ]]>
     </change-notes>
     <idea-version since-build="145.0"/>
     <depends>com.intellij.modules.java</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <fileTemplateGroup id="NutzFw" implementation="com.sgaop.codegenerat.group.NutzFwFileTemplateGroupFactory"></fileTemplateGroup>
+        <applicationConfigurable instance="com.sgaop.codegenerat.project.FileTemplateGroupConfigurable"/>
+        <applicationService serviceImplementation="com.sgaop.codegenerat.project.ToolCfigurationData"/>
+        <fileTemplateGroup id="NutzFw"
+                           implementation="com.sgaop.codegenerat.group.NutzFwFileTemplateGroupFactory"></fileTemplateGroup>
     </extensions>
     <actions>
         <!--快速生成接口和实现类-->

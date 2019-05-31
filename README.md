@@ -33,7 +33,8 @@
     | actionPackage |String | action package |
     | funName |String | 当前功能名称 |
     | templatePath |String | HTML模版目录  |
-    | user | String| 当前用户  |
+    | userName | String| 姓名  |
+    | userMail | String| 用户邮箱  |
     | primaryKey |String |主键  |
     | uuid | boolean | 主键是否是UUID |
     | richText | boolean | 是否有UE富文本编辑器 |

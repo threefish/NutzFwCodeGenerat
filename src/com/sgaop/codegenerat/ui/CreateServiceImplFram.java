@@ -1,17 +1,16 @@
 package com.sgaop.codegenerat.ui;
 
 import com.intellij.ide.actions.OpenProjectFileChooserDescriptor;
-import com.intellij.ide.fileTemplates.FileTemplate;
-import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
-import com.sgaop.codegenerat.idea.actions.ImportCodeTemplate;
+import com.sgaop.codegenerat.project.ToolCfigurationData;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
+import com.sgaop.codegenerat.util.FileUtil;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
 
@@ -20,6 +19,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -56,9 +56,11 @@ public class CreateServiceImplFram extends JDialog {
     private JTextField funNameText;
     private JCheckBox implCheckBox;
     private JCheckBox serviceCheckBox;
-    private JButton importBtn;
+    private JComboBox templateSelect;
+    private ToolCfigurationData configuration;
 
-    public CreateServiceImplFram(ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
+    public CreateServiceImplFram(ToolCfigurationData configuration, ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
+        this.configuration = configuration;
         this.pluginrInfo = pluginEditorInfo;
         this.entityPackage = entityPackage;
         this.entityName = entityName;
@@ -77,12 +79,13 @@ public class CreateServiceImplFram extends JDialog {
         setModal(true);
         setBounds(x, y, w, h);
         getRootPane().setDefaultButton(buttonOK);
-        buttonOK.addActionListener((e) -> onOK());
-        buttonCancel.addActionListener((e) -> onCancel());
         servicePackageText.setText(this.servicePackage + "." + serviceFileName);
         serviceImplPackageText.setText(this.serviceImplPackage + "." + serviceImplFileName);
         actionPackageText.setText(this.actionPackage + "." + actionFileName);
         htmlPathText.setText(this.htmlPaths);
+
+        buttonOK.addActionListener((e) -> onOK());
+        buttonCancel.addActionListener((e) -> onCancel());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -102,22 +105,29 @@ public class CreateServiceImplFram extends JDialog {
                 String selectPath = virtualFile.getCanonicalPath();
                 int start = selectPath.indexOf("WEB-INF");
                 if (start == -1) {
-                    JOptionPane.showMessageDialog(this.rootPane, "请选择WEB-INF下的目录", "错误提示", JOptionPane.ERROR_MESSAGE, null);
+                    Messages.showErrorDialog("请选择WEB-INF下的目录", "错误提示");
                 } else {
                     selectPath = selectPath.replace("\\\\", "/").replace("\\", "/");
                     basePathText.setText(selectPath);
                 }
             });
         }));
-        importBtn.addActionListener(new ImportCodeTemplate(this.pluginrInfo.getProject()));
+        Path path = Paths.get(configuration.getTemplatePath());
+        File[] list = path.toFile().listFiles();
+        for (File file : list) {
+            if (file.isFile()) {
+                continue;
+            }
+            templateSelect.addItem(file.getName());
+        }
     }
 
     private void onOK() {
         try {
             if (this.htmlPathCheckBox.isSelected() && this.basePathText.getText().trim().length() == 0) {
-                JOptionPane.showMessageDialog(this.rootPane, "请选择HTML目录", "错误提示", JOptionPane.ERROR_MESSAGE, null);
+                Messages.showErrorDialog("请选择HTML目录", "错误提示");
             } else if (this.funNameText.getText().trim().length() == 0) {
-                JOptionPane.showMessageDialog(this.rootPane, "请输入功能名称", "错误提示", JOptionPane.ERROR_MESSAGE, null);
+                Messages.showErrorDialog("请输入功能名称", "错误提示");
             } else {
                 String moduleBasePath = pluginrInfo.getPsiFile().getVirtualFile().getCanonicalPath();
                 String temp = entityPackage.replaceAll("\\.", "/");
@@ -132,7 +142,7 @@ public class CreateServiceImplFram extends JDialog {
             if (errorMsg == null && ex.getCause() != null) {
                 errorMsg = ex.getCause().getMessage();
             }
-            JOptionPane.showMessageDialog(this.rootPane, errorMsg, "错误提示", JOptionPane.ERROR_MESSAGE, null);
+            Messages.showErrorDialog(errorMsg, "错误提示");
             throw ex;
         }
     }
@@ -154,7 +164,8 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setActionFileName(this.actionFileName);
         baseVO.setActionPackage(this.actionPackage);
         baseVO.setFunName(this.funNameText.getText());
-        baseVO.setUser(System.getProperties().getProperty("user.name"));
+        baseVO.setUserName(configuration.getUserName());
+        baseVO.setUserMail(configuration.getUserMail());
         Optional optional = javaFields.stream().filter(JavaFieldVO::isPrimaryKey).findFirst();
         if (optional.isPresent()) {
             JavaFieldVO field = (JavaFieldVO) optional.get();
@@ -168,7 +179,7 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setMultiDict(javaFields.stream().filter(JavaFieldVO::isMultiDict).findFirst() != null);
         baseVO.setOneOneRelation(javaFields.stream().filter(JavaFieldVO::isOneOne).findFirst() != null);
         String templatePath = this.basePathText.getText();
-        if(this.htmlPathCheckBox.isSelected()){
+        if (this.htmlPathCheckBox.isSelected()) {
             int start = templatePath.indexOf("WEB-INF");
             baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
         }
@@ -185,6 +196,43 @@ public class CreateServiceImplFram extends JDialog {
      * @param bindData
      */
     private void render(String moduleBasePath, HashMap bindData) {
+        Path servicePath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Service.java");
+        Path serviceImplPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "ServiceImpl.java");
+        Path actionPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Action.java");
+        Path indexPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Index.html");
+        Path editPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Edit.html");
+        ITemplteEngine renderTemplte = new BeetlTemplteEngine();
+        if (this.serviceCheckBox.isSelected() && servicePath.toFile().exists()) {
+            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
+            refreshPath(path);
+        }
+        if (this.implCheckBox.isSelected() && serviceImplPath.toFile().exists()) {
+            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(serviceImplPath.toFile()), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
+            refreshPath(path);
+        }
+        if (this.actionCheckBox.isSelected() && actionPath.toFile().exists()) {
+            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(actionPath.toFile()), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
+            refreshPath(path);
+        }
+        if (this.htmlPathCheckBox.isSelected() && indexPath.toFile().exists()) {
+            if (indexPath.toFile().exists()) {
+                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(indexPath.toFile()), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "index.html"));
+                refreshPath(path);
+            }
+            if (editPath.toFile().exists()) {
+                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(editPath.toFile()), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
+                refreshPath(path);
+            }
+        }
+
+    }
+    /**
+     * 生成文件
+     *
+     * @param moduleBasePath
+     * @param bindData
+     */
+    /*private void renderBak(String moduleBasePath, HashMap bindData) {
         ITemplteEngine renderTemplte = new BeetlTemplteEngine();
         FileTemplateManager fileTemplateManager = FileTemplateManager.getInstance(pluginrInfo.getProject());
         if (this.serviceCheckBox.isSelected()) {
@@ -209,7 +257,7 @@ public class CreateServiceImplFram extends JDialog {
             Path path = renderTemplte.renderToFile(editHtml.getText(), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
             refreshPath(path);
         }
-    }
+    }*/
 
     /**
      * 刷新目录

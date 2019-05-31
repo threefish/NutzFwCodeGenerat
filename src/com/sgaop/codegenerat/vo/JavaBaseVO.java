@@ -36,7 +36,11 @@ public class JavaBaseVO {
     /**
      * 当前用户
      */
-    String user;
+    String userName;
+    /**
+     * 用户邮箱
+     */
+    String userMail;
 
     /**
      * 是否有UE富文本编辑器
@@ -67,56 +71,6 @@ public class JavaBaseVO {
         return richText;
     }
 
-    @Override
-    public String toString() {
-        return "JavaBaseVO{" +
-                "primaryKey='" + primaryKey + '\'' +
-                ", uuid=" + uuid +
-                ", entityName='" + entityName + '\'' +
-                ", entityPackage='" + entityPackage + '\'' +
-                ", servicePackage='" + servicePackage + '\'' +
-                ", serviceFileName='" + serviceFileName + '\'' +
-                ", serviceImplFileName='" + serviceImplFileName + '\'' +
-                ", serviceImplPackage='" + serviceImplPackage + '\'' +
-                ", actionFileName='" + actionFileName + '\'' +
-                ", actionPackage='" + actionPackage + '\'' +
-                ", funName='" + funName + '\'' +
-                ", templatePath='" + templatePath + '\'' +
-                ", user='" + user + '\'' +
-                ", richText=" + richText +
-                ", attachment=" + attachment +
-                ", multiDict=" + multiDict +
-                '}';
-    }
-
-    public boolean isAttachment() {
-        return attachment;
-    }
-
-    public boolean isMultiDict() {
-        return multiDict;
-    }
-
-    public void setMultiDict(boolean multiDict) {
-        this.multiDict = multiDict;
-    }
-
-    public void setAttachment(boolean attachment) {
-        this.attachment = attachment;
-    }
-
-    public void setRichText(boolean richText) {
-        this.richText = richText;
-    }
-
-    public boolean isUuid() {
-        return uuid;
-    }
-
-    public void setUuid(boolean uuid) {
-        this.uuid = uuid;
-    }
-
     public String getPrimaryKey() {
         return primaryKey;
     }
@@ -125,36 +79,12 @@ public class JavaBaseVO {
         this.primaryKey = primaryKey;
     }
 
-    public String getFunName() {
-        return funName;
+    public boolean isUuid() {
+        return uuid;
     }
 
-    public void setFunName(String funName) {
-        this.funName = funName;
-    }
-
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    public void setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    public String getActionFileName() {
-        return actionFileName;
-    }
-
-    public void setActionFileName(String actionFileName) {
-        this.actionFileName = actionFileName;
-    }
-
-    public String getActionPackage() {
-        return actionPackage;
-    }
-
-    public void setActionPackage(String actionPackage) {
-        this.actionPackage = actionPackage;
+    public void setUuid(boolean uuid) {
+        this.uuid = uuid;
     }
 
     public String getEntityName() {
@@ -205,11 +135,71 @@ public class JavaBaseVO {
         this.serviceImplPackage = serviceImplPackage;
     }
 
-    public String getUser() {
-        return user;
+    public String getActionFileName() {
+        return actionFileName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setActionFileName(String actionFileName) {
+        this.actionFileName = actionFileName;
+    }
+
+    public String getActionPackage() {
+        return actionPackage;
+    }
+
+    public void setActionPackage(String actionPackage) {
+        this.actionPackage = actionPackage;
+    }
+
+    public String getFunName() {
+        return funName;
+    }
+
+    public void setFunName(String funName) {
+        this.funName = funName;
+    }
+
+    public String getTemplatePath() {
+        return templatePath;
+    }
+
+    public void setTemplatePath(String templatePath) {
+        this.templatePath = templatePath;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserMail() {
+        return userMail;
+    }
+
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
+    }
+
+    public void setRichText(boolean richText) {
+        this.richText = richText;
+    }
+
+    public boolean isAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(boolean attachment) {
+        this.attachment = attachment;
+    }
+
+    public boolean isMultiDict() {
+        return multiDict;
+    }
+
+    public void setMultiDict(boolean multiDict) {
+        this.multiDict = multiDict;
     }
 }
