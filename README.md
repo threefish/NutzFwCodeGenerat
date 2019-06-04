@@ -39,6 +39,8 @@
     | uuid | boolean | 主键是否是UUID |
     | richText | boolean | 是否有UE富文本编辑器 |
     | attachment | boolean | 是否有附件上传 |
+    | multidict |boolean| 是否是NutzFw多选字典 |
+    | oneOneRelation |boolean| 存在一对一表单关联 |
     | fields | List<JavaFieldVO> | 当前实体类的字段列表 |
     
 - 当前实体类的字段信息
@@ -58,7 +60,7 @@
     | required |boolean | 是否必填必选字段 |false|
     | text |int | 文本类型 输入框2-多行文本框3-百度UE4 |false|
     | attachment |boolean | 附件类型|false|
-    | attachmentType |int | 附件类型-多附件0-单附件1|0|
+    | attachmentMultiple |boolean | 是否是多附件类型|false|
     | attachmentAllIsImg |boolean | 附件全部是图片|false|
     | attachSuffix |String | 限制附件格式(jpg,png)|xlsx,xls,png,jpg,doc,docx|
     | placeholder |String |提示信息|无|
