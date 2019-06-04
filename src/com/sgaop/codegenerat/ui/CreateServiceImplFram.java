@@ -13,8 +13,10 @@ import com.sgaop.codegenerat.project.ToolCfigurationData;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
 import com.sgaop.codegenerat.util.FileUtil;
+import com.sgaop.codegenerat.util.Strings;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
+import com.sgaop.codegenerat.vo.RenderDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,13 +111,17 @@ public class CreateServiceImplFram extends JDialog {
                 basePathText.setText(selectPath);
             });
         }));
-        Path path = Paths.get(configuration.getTemplatePath());
-        File[] list = path.toFile().listFiles();
-        for (File file : list) {
-            if (file.isFile()) {
-                continue;
+        if (Strings.isNullOrEmpty(configuration.getTemplatePath())) {
+            Messages.showErrorDialog("请先设置模板目录", "错误提示");
+        } else {
+            Path path = Paths.get(configuration.getTemplatePath());
+            File[] list = path.toFile().listFiles();
+            for (File file : list) {
+                if (file.isFile()) {
+                    continue;
+                }
+                templateSelect.addItem(file.getName());
             }
-            templateSelect.addItem(file.getName());
         }
     }
 
@@ -130,9 +136,24 @@ public class CreateServiceImplFram extends JDialog {
                 String temp = entityPackage.replaceAll("\\.", "/");
                 moduleBasePath = moduleBasePath.replace(temp, "");
                 moduleBasePath = moduleBasePath.replace("/" + entityName + ".java", "");
-                render(moduleBasePath, buildData(pluginrInfo.getJavaFields()));
-                dispose();
-                Messages.showInfoMessage(pluginrInfo.getProject(), "代码生成完成！", "生成完成");
+                RenderDTO renderDTO = new RenderDTO();
+                renderDTO.setServicePath(Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Service.java"));
+                renderDTO.setServiceImplPath(Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "ServiceImpl.java"));
+                renderDTO.setActionPath(Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Action.java"));
+                renderDTO.setIndexPath(Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Index.html"));
+                renderDTO.setEditPath(Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Edit.html"));
+                renderDTO.setHtmlPath(this.htmlPathCheckBox.isSelected());
+                renderDTO.setAction(this.actionCheckBox.isSelected());
+                renderDTO.setServiceImpl(this.implCheckBox.isSelected());
+                renderDTO.setService(this.serviceCheckBox.isSelected());
+                renderDTO.setServicePackageText(this.servicePackageText.getText());
+                renderDTO.setServiceImplPackageText(this.serviceImplPackageText.getText());
+                renderDTO.setActionPackageText(this.actionPackageText.getText());
+                renderDTO.setBasePathText(this.basePathText.getText());
+                renderDTO.setHtmlPaths(this.htmlPaths);
+                PreviewData dialog = new PreviewData(this, pluginrInfo.getProject(), renderDTO, moduleBasePath, buildData(pluginrInfo.getJavaFields()));
+                dialog.pack();
+                dialog.setVisible(true);
             }
         } catch (Throwable ex) {
             String errorMsg = ex.getMessage();
@@ -186,70 +207,6 @@ public class CreateServiceImplFram extends JDialog {
         return bindData;
     }
 
-    /**
-     * 生成文件
-     *
-     * @param moduleBasePath
-     * @param bindData
-     */
-    private void render(String moduleBasePath, HashMap bindData) {
-        Path servicePath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Service.java");
-        Path serviceImplPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "ServiceImpl.java");
-        Path actionPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Action.java");
-        Path indexPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Index.html");
-        Path editPath = Paths.get(configuration.getTemplatePath(), templateSelect.getSelectedItem().toString(), "Edit.html");
-        ITemplteEngine renderTemplte = new BeetlTemplteEngine();
-        if (this.serviceCheckBox.isSelected() && servicePath.toFile().exists()) {
-            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, this.servicePackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.implCheckBox.isSelected() && serviceImplPath.toFile().exists()) {
-            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(serviceImplPath.toFile()), bindData, getPath(moduleBasePath, this.serviceImplPackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.actionCheckBox.isSelected() && actionPath.toFile().exists()) {
-            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(actionPath.toFile()), bindData, getPath(moduleBasePath, this.actionPackageText.getText()));
-            refreshPath(path);
-        }
-        if (this.htmlPathCheckBox.isSelected() && indexPath.toFile().exists()) {
-            if (indexPath.toFile().exists()) {
-                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(indexPath.toFile()), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "index.html"));
-                refreshPath(path);
-            }
-            if (editPath.toFile().exists()) {
-                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(editPath.toFile()), bindData, Paths.get(this.basePathText.getText(), this.htmlPaths, "edit.html"));
-                refreshPath(path);
-            }
-        }
-
-    }
-
-    /**
-     * 刷新目录
-     *
-     * @param path
-     */
-    private void refreshPath(Path path) {
-        VirtualFile value = VirtualFileManager.getInstance().findFileByUrl(path.toUri().toString());
-        if (value != null) {
-            value.refresh(true, true);
-        }
-    }
-
-
-    private Path getPath(String basePath, String packages) {
-        String[] s1 = packages.split("\\.");
-        ArrayList<String> list = new ArrayList<>();
-        int last = s1.length - 1;
-        for (int i = 0; i < s1.length; i++) {
-            if (i == last) {
-                list.add(s1[i] + ".java");
-            } else {
-                list.add(s1[i]);
-            }
-        }
-        return Paths.get(basePath, list.toArray(new String[0]));
-    }
 
     private void onCancel() {
         dispose();

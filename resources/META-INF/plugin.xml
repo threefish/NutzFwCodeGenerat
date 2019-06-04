@@ -44,11 +44,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="com.sgaop.codegenerat.project.FileTemplateGroupConfigurable"/>
         <applicationService serviceImplementation="com.sgaop.codegenerat.project.ToolCfigurationData"/>
-        <fileTemplateGroup id="NutzFw"
-                           implementation="com.sgaop.codegenerat.group.NutzFwFileTemplateGroupFactory"></fileTemplateGroup>
     </extensions>
     <actions>
-        <!--快速生成接口和实现类-->
         <action id="codeGeneratAction" icon="/icons/nutz.png"
                 class="com.sgaop.codegenerat.idea.actions.CodeGeneratAction" text="代码生成" description="代码生成">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
