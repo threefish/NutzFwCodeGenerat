@@ -4,9 +4,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.util.PsiUtilCore;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
 import com.sgaop.codegenerat.util.FileUtil;
+import com.sgaop.codegenerat.util.TemplateFileUtil;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
 import com.sgaop.codegenerat.vo.RenderDTO;
@@ -61,7 +64,7 @@ public class PreviewData extends JDialog {
         });
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         JavaBaseVO javaBaseVO = (JavaBaseVO) bindData.getOrDefault("base", new JavaBaseVO());
-        DefaultTableModel baseModel = new DefaultTableModel(new String[]{"变量名", "值", "描述意义"}, 0){
+        DefaultTableModel baseModel = new DefaultTableModel(new String[]{"变量名", "值", "描述意义"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -94,7 +97,7 @@ public class PreviewData extends JDialog {
                 "是否字典", "字典Code", "是否必填必选字段", "文本类型 输入框2-多行文本框3-百度UE4", "附件类型", "是否是多附件类型", "附件全部是图片",
                 "限制附件格式", "提示信息", "文本最大长度", "是单表关联", "表关联字段", "表关联类", "表关联类全路径"
         };
-        DefaultTableModel fieldsModel = new DefaultTableModel(headers, 0){
+        DefaultTableModel fieldsModel = new DefaultTableModel(headers, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -127,7 +130,7 @@ public class PreviewData extends JDialog {
 
     private void onOK() {
         try {
-            render();
+
             createServiceImplFram.dispose();
             this.dispose();
             Messages.showInfoMessage(project, "代码生成完成！", "生成完成");
@@ -140,6 +143,7 @@ public class PreviewData extends JDialog {
             throw ex;
         }
     }
+
 
     private void onCancel() {
         dispose();
@@ -156,8 +160,12 @@ public class PreviewData extends JDialog {
         Path editPath = renderDTO.getEditPath();
         ITemplteEngine renderTemplte = new BeetlTemplteEngine();
         if (renderDTO.isService() && servicePath.toFile().exists()) {
-            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServicePackageText()));
-            refreshPath(path);
+            if ("beetl".equals(renderDTO.getTemplateEngine())) {
+                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServicePackageText()));
+                refreshPath(path);
+            }else{
+//                TemplateFileUtil.createFromTemplate(servicePath.toString(),servicePath.toFile().getName(),)
+            }
         }
         if (renderDTO.isServiceImpl() && serviceImplPath.toFile().exists()) {
             Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(serviceImplPath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServiceImplPackageText()));

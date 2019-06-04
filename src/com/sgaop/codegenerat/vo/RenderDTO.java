@@ -23,6 +23,16 @@ public class RenderDTO {
     String basePathText;
     String htmlPaths;
 
+    String templateEngine;
+
+    public String getTemplateEngine() {
+        return templateEngine;
+    }
+
+    public void setTemplateEngine(String templateEngine) {
+        this.templateEngine = templateEngine;
+    }
+
     public String getServicePackageText() {
         return servicePackageText;
     }

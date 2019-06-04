@@ -61,6 +61,7 @@ public class CreateServiceImplFram extends JDialog {
     private JCheckBox implCheckBox;
     private JCheckBox serviceCheckBox;
     private JComboBox templateSelect;
+    private JComboBox templateEngine;
     private ToolCfigurationData configuration;
 
     public CreateServiceImplFram(ToolCfigurationData configuration, ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
@@ -87,7 +88,8 @@ public class CreateServiceImplFram extends JDialog {
         serviceImplPackageText.setText(this.serviceImplPackage + "." + serviceImplFileName);
         actionPackageText.setText(this.actionPackage + "." + actionFileName);
         htmlPathText.setText(this.htmlPaths);
-
+        templateEngine.addItem("beetl");
+        templateEngine.addItem("apache velocity");
         buttonOK.addActionListener((e) -> onOK());
         buttonCancel.addActionListener((e) -> onCancel());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -151,6 +153,8 @@ public class CreateServiceImplFram extends JDialog {
                 renderDTO.setActionPackageText(this.actionPackageText.getText());
                 renderDTO.setBasePathText(this.basePathText.getText());
                 renderDTO.setHtmlPaths(this.htmlPaths);
+                renderDTO.setTemplateEngine(String.valueOf(templateEngine.getSelectedItem()));
+
                 PreviewData dialog = new PreviewData(this, pluginrInfo.getProject(), renderDTO, moduleBasePath, buildData(pluginrInfo.getJavaFields()));
                 dialog.pack();
                 dialog.setVisible(true);
