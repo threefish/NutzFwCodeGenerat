@@ -2,17 +2,12 @@ package com.sgaop.codegenerat.ui;
 
 import com.intellij.ide.actions.OpenProjectFileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.roots.impl.JavaProjectModelModificationServiceImpl;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.sgaop.codegenerat.idea.ProjectPluginConfig;
 import com.sgaop.codegenerat.project.ToolCfigurationData;
-import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
-import com.sgaop.codegenerat.templte.ITemplteEngine;
-import com.sgaop.codegenerat.util.FileUtil;
 import com.sgaop.codegenerat.util.Strings;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
@@ -26,7 +21,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -203,7 +197,11 @@ public class CreateServiceImplFram extends JDialog {
         String templatePath = this.basePathText.getText();
         if (this.htmlPathCheckBox.isSelected()) {
             int start = templatePath.indexOf("WEB-INF");
-            baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
+            if (start > -1) {
+                baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
+            } else {
+                baseVO.setTemplatePath(templatePath + htmlPaths);
+            }
         }
         HashMap bindData = new HashMap(2);
         bindData.put("base", baseVO);

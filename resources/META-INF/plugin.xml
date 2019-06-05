@@ -19,12 +19,14 @@
          <li> 2、Can be enhanced by deploying template conten</li>
          <li> 3、Support for importing templates</li>
          <li> 3、Add table association</li>
+         <li> 4、Multi-mode engine rendering</li>
        </ul>
        <b>中文</b>
        <ul>
          <li> 1、可以快速生成基于注解表结构的增、删、改、查、附件上传、查看、列表展示等功能</li>
          <li> 2、自动识别模版目录下的所有文件夹为模版</li>
          <li> 3、添加表关联</li>
+         <li> 4、多模版引擎渲染</li>
        </ul>
       </p>
       <br/>
@@ -36,6 +38,7 @@
        <ul>
         <li>升级为通用版本</li>
         <li>移除导入模版功能，升级为目录扫描。自动识别模版目录下的所有文件夹为模版。</li>
+        <li>添加Velocity模版引擎。</li>
       </p>
     ]]>
     </change-notes>

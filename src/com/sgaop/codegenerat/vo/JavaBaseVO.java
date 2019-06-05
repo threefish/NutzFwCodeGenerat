@@ -71,6 +71,10 @@ public class JavaBaseVO {
         return richText;
     }
 
+    public void setRichText(boolean richText) {
+        this.richText = richText;
+    }
+
     public String getPrimaryKey() {
         return primaryKey;
     }
@@ -181,10 +185,6 @@ public class JavaBaseVO {
 
     public void setUserMail(String userMail) {
         this.userMail = userMail;
-    }
-
-    public void setRichText(boolean richText) {
-        this.richText = richText;
     }
 
     public boolean isAttachment() {

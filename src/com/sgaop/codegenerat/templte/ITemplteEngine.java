@@ -15,7 +15,7 @@ public interface ITemplteEngine {
      * @param bindData   绑定参数
      * @return
      */
-    String render(String templePath, Map bindData) throws Exception;
+    String render(String templePath, Map<String, Object> bindData) throws Exception;
 
-    Path renderToFile(String templePath, Map bindData, Path path);
+    Path renderToFile(String templePath, Map<String, Object> bindData, Path path);
 }

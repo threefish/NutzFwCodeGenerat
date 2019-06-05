@@ -27,7 +27,7 @@ public class TemplateErrorHandler extends ConsoleErrorHandler {
 
         if (error.getErrorCode().equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
             //不输出详细提示信息
-            title = new StringBuilder("").append("客户端IO异常:").append(e.resource.getId());
+            title = new StringBuilder().append("客户端IO异常:").append(e.resource.getId());
             if (e.getCause() != null) {
                 msg.append(e.getCause());
             }
@@ -37,7 +37,7 @@ public class TemplateErrorHandler extends ConsoleErrorHandler {
 
         int line = error.getErrorTokenLine();
 
-        title = new StringBuilder("").append(error.getType()).append(":").append(error.getErrorTokenText())
+        title = new StringBuilder().append(error.getType()).append(":").append(error.getErrorTokenText())
                 .append(" 位于").append(line).append("行\n\n");
 
         if (error.getErrorCode().equals(BeetlException.TEMPLATE_LOAD_ERROR)) {

@@ -15,7 +15,7 @@ public class StringExt {
      */
     public String capitalize(String string) {
         String first = string.substring(0, 1);
-        String end = string.substring(1, string.length());
+        String end = string.substring(1);
         return first.toUpperCase() + end;
     }
 
@@ -27,7 +27,7 @@ public class StringExt {
      */
     public String uncapitalize(String string) {
         String first = string.substring(0, 1);
-        String end = string.substring(1, string.length());
+        String end = string.substring(1);
         return first.toLowerCase() + end;
     }
 }

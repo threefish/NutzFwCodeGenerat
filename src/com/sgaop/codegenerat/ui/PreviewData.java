@@ -4,12 +4,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.util.PsiUtilCore;
 import com.sgaop.codegenerat.templte.BeetlTemplteEngine;
 import com.sgaop.codegenerat.templte.ITemplteEngine;
+import com.sgaop.codegenerat.templte.VelocityTemplateEngine;
 import com.sgaop.codegenerat.util.FileUtil;
-import com.sgaop.codegenerat.util.TemplateFileUtil;
 import com.sgaop.codegenerat.vo.JavaBaseVO;
 import com.sgaop.codegenerat.vo.JavaFieldVO;
 import com.sgaop.codegenerat.vo.RenderDTO;
@@ -17,8 +15,10 @@ import com.sgaop.codegenerat.vo.RenderDTO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import java.awt.Toolkit;
-import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -45,13 +45,12 @@ public class PreviewData extends JDialog {
         this.moduleBasePath = moduleBasePath;
         this.bindData = bindData;
         this.renderDTO = renderDTO;
-        int w = 1800, h = 1000;
+        int w = 1600, h = 800;
         int x = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - (w / 2));
-        int y = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 - (h / 2));
         setContentPane(contentPane);
         setModal(true);
         setTitle("代码生成");
-        setBounds(x, y, w, h);
+        setBounds(x, 10, w, h);
         getRootPane().setDefaultButton(buttonOK);
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
@@ -64,7 +63,7 @@ public class PreviewData extends JDialog {
         });
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         JavaBaseVO javaBaseVO = (JavaBaseVO) bindData.getOrDefault("base", new JavaBaseVO());
-        DefaultTableModel baseModel = new DefaultTableModel(new String[]{"变量名", "值", "描述意义"}, 0) {
+        DefaultTableModel baseModel = new DefaultTableModel(new String[]{"变量名", "变量值", "变量意义描述"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -119,18 +118,18 @@ public class PreviewData extends JDialog {
             TableColumn tableColumn = fieldTable.getColumnModel().getColumn(i);
             Object value = fieldsModel.getValueAt(0, i);
             if (value instanceof Boolean) {
-                tableColumn.setPreferredWidth(100);
-            } else if (value instanceof Integer) {
                 tableColumn.setPreferredWidth(50);
+            } else if (value instanceof Integer) {
+                tableColumn.setPreferredWidth(20);
             } else {
-                tableColumn.setPreferredWidth(150);
+                tableColumn.setPreferredWidth(100);
             }
         }
     }
 
     private void onOK() {
         try {
-
+            render();
             createServiceImplFram.dispose();
             this.dispose();
             Messages.showInfoMessage(project, "代码生成完成！", "生成完成");
@@ -158,14 +157,15 @@ public class PreviewData extends JDialog {
         Path actionPath = renderDTO.getActionPath();
         Path indexPath = renderDTO.getIndexPath();
         Path editPath = renderDTO.getEditPath();
-        ITemplteEngine renderTemplte = new BeetlTemplteEngine();
+        ITemplteEngine renderTemplte;
+        if ("beetl".equals(renderDTO.getTemplateEngine())) {
+            renderTemplte = new BeetlTemplteEngine();
+        } else {
+            renderTemplte = new VelocityTemplateEngine();
+        }
         if (renderDTO.isService() && servicePath.toFile().exists()) {
-            if ("beetl".equals(renderDTO.getTemplateEngine())) {
-                Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServicePackageText()));
-                refreshPath(path);
-            }else{
-//                TemplateFileUtil.createFromTemplate(servicePath.toString(),servicePath.toFile().getName(),)
-            }
+            Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(servicePath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServicePackageText()));
+            refreshPath(path);
         }
         if (renderDTO.isServiceImpl() && serviceImplPath.toFile().exists()) {
             Path path = renderTemplte.renderToFile(FileUtil.readStringByFile(serviceImplPath.toFile()), bindData, getPath(moduleBasePath, renderDTO.getServiceImplPackageText()));
