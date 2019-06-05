@@ -2,7 +2,7 @@
 ## 代码生成器
 
 ### 模版修改 
-   -  Settings >> Editor >> File and Code Templates >> Other >> NutzFw
+   -  Settings >> Editor >> File and Code Templates >> Other >> NutzFw Code Generat
    
 - [NutzFw项目模版下载地址](https://github.com/threefish/NutzFwCodeGenerat/tree/master/release)
   - 如不是[NutzFw](https://github.com/threefish/NutzFw)项目，请务必修改模版

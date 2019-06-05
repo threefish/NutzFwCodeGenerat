@@ -78,7 +78,6 @@ public class PreviewData extends JDialog {
         baseModel.addRow(new String[]{"actionFileName", javaBaseVO.getActionFileName(), "action File Name"});
         baseModel.addRow(new String[]{"actionPackage", javaBaseVO.getActionPackage(), "action package"});
         baseModel.addRow(new String[]{"funName", javaBaseVO.getFunName(), "当前功能名称"});
-        baseModel.addRow(new String[]{"templatePath", javaBaseVO.getTemplatePath(), "HTML模版目录"});
         baseModel.addRow(new String[]{"userName", javaBaseVO.getUserName(), "姓名"});
         baseModel.addRow(new String[]{"userMail", javaBaseVO.getUserMail(), "用户邮箱"});
         baseModel.addRow(new String[]{"primaryKey", javaBaseVO.getPrimaryKey(), "主键"});
@@ -87,6 +86,7 @@ public class PreviewData extends JDialog {
         baseModel.addRow(new String[]{"attachment", String.valueOf(javaBaseVO.isAttachment()), "是否有附件上传"});
         baseModel.addRow(new String[]{"multidict", String.valueOf(javaBaseVO.isMultiDict()), "是否是NutzFw多选字典"});
         baseModel.addRow(new String[]{"oneOneRelation", String.valueOf(javaBaseVO.isOneOneRelation()), "存在一对一表单关联"});
+        baseModel.addRow(new String[]{"templatePath", javaBaseVO.getTemplatePath(), "HTML模版目录"});
         baseTable.setRowHeight(20);
         baseTable.setModel(baseModel);
 

@@ -68,7 +68,7 @@ public class CreateServiceImplFram extends JDialog {
         this.actionFileName = entityName + "Action";
         this.servicePackage = entityPackage.replace("entity", "service");
         this.serviceImplPackage = entityPackage.replace("entity", "service") + ".impl";
-        this.actionPackage = entityPackage.replace("entity", "module");
+        this.actionPackage = entityPackage.replace("entity", "action");
         this.htmlPaths = "/" + entityName + "/";
         int w = 500, h = 400;
         int x = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - (w / 2));
