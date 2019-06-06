@@ -7,6 +7,8 @@
 - [NutzFw项目模版下载地址](https://github.com/threefish/NutzFwCodeGenerat/tree/master/release)
   - 如不是[NutzFw](https://github.com/threefish/NutzFw)项目，请务必修改模版
  
+ 插件商店 https://plugins.jetbrains.com/plugin/11575
+ 
  ### 模版语法采用BEETL
  ```java   
          /** 模板占位起始符号 */
