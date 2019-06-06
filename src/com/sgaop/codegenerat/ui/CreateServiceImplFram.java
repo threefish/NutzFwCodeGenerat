@@ -56,6 +56,7 @@ public class CreateServiceImplFram extends JDialog {
     private JCheckBox serviceCheckBox;
     private JComboBox templateSelect;
     private JComboBox templateEngine;
+    private JTextField htmlPathCutOff;
     private ToolCfigurationData configuration;
 
     public CreateServiceImplFram(ToolCfigurationData configuration, ProjectPluginConfig pluginEditorInfo, String entityPackage, String entityName) {
@@ -196,7 +197,7 @@ public class CreateServiceImplFram extends JDialog {
         baseVO.setOneOneRelation(javaFields.stream().filter(JavaFieldVO::isOneOne).findFirst() != null);
         String templatePath = this.basePathText.getText();
         if (this.htmlPathCheckBox.isSelected()) {
-            int start = templatePath.indexOf("WEB-INF");
+            int start = templatePath.indexOf(htmlPathCutOff.getText());
             if (start > -1) {
                 baseVO.setTemplatePath(templatePath.substring(start) + htmlPaths);
             } else {

@@ -22,7 +22,7 @@ public class JavaFieldUtil {
 
     private static final String COMMENT = "org.nutz.dao.entity.annotation.Comment";
 
-    private static final String DICT = "com.nutzfw.annotation.NutzFw";
+    private static final String NUTZ_FW = "com.nutzfw.core.common.annotation.NutzFw";
 
     public static boolean isDate(PsiField field) {
         String type = field.getType().getPresentableText();
@@ -73,7 +73,7 @@ public class JavaFieldUtil {
         javaField.setFullType(field.getType().getCanonicalText());
         javaField.setShow(true);
         javaField.setMaxLength(50);
-        PsiAnnotation annotation = field.getAnnotation(DICT);
+        PsiAnnotation annotation = field.getAnnotation(NUTZ_FW);
         if (annotation != null) {
             List<JvmAnnotationAttribute> attributes = annotation.getAttributes();
             if (attributes.size() > 0) {

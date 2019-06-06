@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.sgaop.codegenerat.nutzfw</id>
     <name>NutzFw Code Generat</name>
-    <version>1.0.8</version>
+    <version>1.0.8.fix</version>
     <vendor email="huchuc@vip.qq.com" url="https://github.com/threefish/NutzFw">threefish</vendor>
     <description><![CDATA[
       <h1>Intellij idea plugin for <a href="https://github.com/threefish/NutzFw">NutzFw</a></h1>
@@ -43,7 +43,7 @@
       </p>
     ]]>
     </change-notes>
-    <idea-version since-build="145.0"/>
+    <idea-version since-build="183"/>
     <depends>com.intellij.modules.java</depends>
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="com.sgaop.codegenerat.project.FileTemplateGroupConfigurable"/>
