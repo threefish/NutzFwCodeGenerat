@@ -88,7 +88,7 @@ public class PreviewData extends JDialog {
         String[] headers = new String[]{
                 "JAVA字段名称", "主键", "字段描述", "数据库字段名", "JAVA字段类型", "JAVA字段类型包含引用", "是否日期",
                 "是否字典", "字典Code", "是否必填必选字段", "文本类型 输入框2-多行文本框3-百度UE4", "附件类型", "是否是多附件类型", "附件全部是图片",
-                "限制附件格式", "提示信息", "文本最大长度", "是单表关联", "表关联字段", "表关联类", "表关联类全路径"
+                "限制附件格式", "提示信息", "文本最大长度", "是单表关联", "表关联字段", "表关联类", "表关联类全路径", "是否显示"
         };
         DefaultTableModel fieldsModel = new DefaultTableModel(headers, 0);
         javaFieldVOList.forEach(vo -> {
@@ -96,7 +96,7 @@ public class PreviewData extends JDialog {
                     vo.getName(), vo.isPrimaryKey(), vo.getComment(), vo.getColumnName(), vo.getType(), vo.getFullType(), vo.isDate(),
                     vo.isDict(), vo.getDictCode(), vo.isRequired(), vo.getText(), vo.isAttachment(), vo.isAttachmentMultiple(), vo.isAttachmentAllIsImg(),
                     vo.getAttachSuffix(), vo.getPlaceholder(), vo.getMaxLength(), vo.isOneOne(),
-                    vo.getOneOneField(), vo.getOneOneClassName(), vo.getOneOneClassQualifiedName()
+                    vo.getOneOneField(), vo.getOneOneClassName(), vo.getOneOneClassQualifiedName(), vo.isShow()
             });
         });
 
@@ -143,6 +143,7 @@ public class PreviewData extends JDialog {
                 vo.setOneOneField((String) fieldsModel.getValueAt(i, 18));
                 vo.setOneOneClassName((String) fieldsModel.getValueAt(i, 19));
                 vo.setOneOneClassQualifiedName((String) fieldsModel.getValueAt(i, 20));
+                vo.setShow(Boolean.parseBoolean(String.valueOf(fieldsModel.getValueAt(i, 21))));
                 javaFieldVOS.add(vo);
             }
             TableModel baseModel = baseTable.getModel();
