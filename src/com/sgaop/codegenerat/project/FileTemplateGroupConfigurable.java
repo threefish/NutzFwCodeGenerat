@@ -1,6 +1,5 @@
 package com.sgaop.codegenerat.project;
 
-import com.google.common.base.Objects;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.ProjectManager;
@@ -9,6 +8,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Objects;
 
 /**
  * @author huchuc@vip.qq.com
@@ -38,9 +38,9 @@ public class FileTemplateGroupConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        return !Objects.equal(configuration.getTemplatePath(), ui.getTemplatePath().getText())
-                || !Objects.equal(configuration.getUserMail(), ui.getUserMail().getText())
-                || !Objects.equal(configuration.getUserName(), ui.getUserName().getText());
+        return !Objects.equals(configuration.getTemplatePath(), ui.getTemplatePath().getText())
+                || !Objects.equals(configuration.getUserMail(), ui.getUserMail().getText())
+                || !Objects.equals(configuration.getUserName(), ui.getUserName().getText());
     }
 
     @Override
